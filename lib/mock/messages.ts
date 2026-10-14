@@ -1,0 +1,76 @@
+import type { MessageThread } from "@/lib/types";
+
+export const MOCK_MESSAGE_THREADS: MessageThread[] = [
+  {
+    id: "th-sara-khan-ahmed",
+    participantId: "ph-sara-khan",
+    participantName: "Sara Khan",
+    participantRole: "photographer",
+    replySpeed: "Replies within the hour",
+    unreadCount: 0,
+    lastMessageAt: "10:24 am",
+    messages: [
+      {
+        id: "msg-001",
+        threadId: "th-sara-khan-ahmed",
+        senderId: "ph-sara-khan",
+        senderName: "Sara Khan",
+        senderRole: "photographer",
+        text: "Is the stage facing east? I want the window light in the afternoon portraits.",
+        sentAt: "10:14 am",
+      },
+      {
+        id: "msg-002",
+        threadId: "th-sara-khan-ahmed",
+        senderId: "cl-sara-ahmed",
+        senderName: "Sara and Ahmed",
+        senderRole: "client",
+        text: "It faces west. Afternoon light will come from the left.",
+        sentAt: "10:18 am",
+      },
+      {
+        id: "msg-003",
+        threadId: "th-sara-khan-ahmed",
+        senderId: "ph-sara-khan",
+        senderName: "Sara Khan",
+        senderRole: "photographer",
+        text: "Like this, but warmer.",
+        sentAt: "10:24 am",
+        attachment: {
+          type: "placeholder",
+          caption: "Lighting reference, warm afternoon tone",
+          tone: "warm",
+        },
+      },
+    ],
+  },
+  {
+    id: "th-print-house-ahmed",
+    participantId: "vd-print-house",
+    participantName: "Print House",
+    participantRole: "vendor",
+    replySpeed: "Replies within 2 hours",
+    unreadCount: 1,
+    lastMessageAt: "Yesterday",
+    messages: [
+      {
+        id: "msg-ph-01",
+        threadId: "th-print-house-ahmed",
+        senderId: "vd-print-house",
+        senderName: "Print House",
+        senderRole: "vendor",
+        text: "We have prepared the quote for the 30-page flush mount album with natural linen binding.",
+        sentAt: "Yesterday, 3:30 pm",
+      },
+      {
+        id: "msg-ph-02",
+        threadId: "th-print-house-ahmed",
+        senderId: "vd-print-house",
+        senderName: "Print House",
+        senderRole: "vendor",
+        text: "Turnaround time is 10 working days from approval of proofs.",
+        sentAt: "Yesterday, 3:32 pm",
+      },
+    ],
+  },
+];
