@@ -44,10 +44,35 @@ import {
   DialogFooter,
   Toast,
 } from "@/components/ui";
+import {
+  MonthCalendar,
+  PhotoGrid,
+  PackageRow,
+  PhotographerCard,
+  FormField,
+  EmptyState,
+  SectionHeader,
+} from "@/components/patterns";
 
 export default function DesignSystemPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toastVisible, setToastVisible] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<number | null>(14);
+  const [favourites, setFavourites] = useState<(string | number)[]>([101, 103]);
+  const [selectedPackage, setSelectedPackage] = useState<string>("mehndi");
+
+  const samplePhotos = [
+    { id: 101, number: "101", tone: "warm" as const, event: "Mehndi", aperture: "f/1.8" },
+    { id: 102, number: "102", tone: "midnight" as const, event: "Baraat", aperture: "f/2.8" },
+    { id: 103, number: "103", tone: "slate" as const, event: "Walima", aperture: "f/1.4" },
+    { id: 104, number: "104", tone: "dune" as const, event: "Nikkah", aperture: "f/2.0" },
+  ];
+
+  const handleToggleFavourite = (id: string | number) => {
+    setFavourites((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
 
   const colors = [
     { name: "midnight", hex: "#0A1428", role: "Primary text on light, background on dark, solid primary button on light" },
@@ -807,7 +832,337 @@ export default function DesignSystemPage() {
               </div>
             </div>
           </div>
+        </section>
 
+        {/* SECTION 4: Pattern components */}
+        <section className="space-y-12">
+          <SectionHeader
+            title="Pattern components"
+            lede="Composed patterns in /components/patterns built from brand tokens and core UI. Demonstrated on both light and dark surfaces."
+            withBrassHairline
+          />
+
+          <Tabs defaultValue="both-patterns" className="w-full">
+            <TabsList>
+              <TabsTrigger value="both-patterns">Side-by-side surfaces</TabsTrigger>
+              <TabsTrigger value="light-patterns">Light surface only</TabsTrigger>
+              <TabsTrigger value="dark-patterns">Dark surface only</TabsTrigger>
+            </TabsList>
+
+            {["both-patterns", "light-patterns", "dark-patterns"].map((tabVal) => (
+              <TabsContent key={tabVal} value={tabVal} className="space-y-12 mt-6">
+                <div className={tabVal === "both-patterns" ? "grid grid-cols-1 lg:grid-cols-2 gap-8" : "space-y-8"}>
+
+                  {/* LIGHT SURFACE PATTERNS */}
+                  {(tabVal === "both-patterns" || tabVal === "light-patterns") && (
+                    <div
+                      data-surface="light"
+                      className="border border-[#CFCFCB] rounded-[2px] p-8 bg-chalk text-midnight space-y-12"
+                    >
+                      <div className="flex items-center justify-between border-b border-[#CFCFCB] pb-4">
+                        <span className="font-sans text-xs uppercase tracking-wider text-slate">
+                          Patterns on Light Surface
+                        </span>
+                        <GoldDot />
+                      </div>
+
+                      {/* 1. MonthCalendar */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          1. MonthCalendar
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Keyboard navigable with accessible labels. Click or press Enter to pick a date.
+                        </p>
+                        <MonthCalendar
+                          month="December"
+                          year={2026}
+                          daysCount={31}
+                          firstDayOffset={1}
+                          bookedDates={[4, 5, 11, 12, 19, 26]}
+                          selectedDate={selectedDate}
+                          onSelect={setSelectedDate}
+                        />
+                        <p className="font-sans text-xs text-slate tabular-nums">
+                          Selected date: {selectedDate ? `${selectedDate} December 2026` : "None"}
+                        </p>
+                      </div>
+
+                      {/* 2. PhotoGrid */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          2. PhotoGrid
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Frame numbers bottom-left. Click tile to toggle favourite GoldDot top-right.
+                        </p>
+                        <PhotoGrid
+                          items={samplePhotos}
+                          favourites={favourites}
+                          onToggle={handleToggleFavourite}
+                        />
+                      </div>
+
+                      {/* 3. PackageRow */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          3. PackageRow
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Selected package has a 3px brass bar on the left edge and midnight border.
+                        </p>
+                        <div className="space-y-2">
+                          <PackageRow
+                            name="Mehndi coverage (6 hours)"
+                            detail="2 photographers, 300 edited frames, proofing gallery"
+                            price={145000}
+                            selected={selectedPackage === "mehndi"}
+                            onClick={() => setSelectedPackage("mehndi")}
+                          />
+                          <PackageRow
+                            name="Full wedding (3 days)"
+                            detail="Mehndi, Baraat, Walima with album and raw archive"
+                            price={380000}
+                            selected={selectedPackage === "full"}
+                            onClick={() => setSelectedPackage("full")}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 4. PhotographerCard */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          4. PhotographerCard
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Shows VerifiedBadge strictly when verified is true. Name in display serif at 24px.
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <PhotographerCard
+                            name="Sara Khan"
+                            avatarFallback="SK"
+                            verified={true}
+                            city="Karachi"
+                            specialisation="Weddings & portraits"
+                            startingPrice={145000}
+                            nextFreeDate="Free on 14 Dec"
+                            onBook={() => setDialogOpen(true)}
+                          />
+                          <PhotographerCard
+                            name="Tariq Aziz"
+                            avatarFallback="TA"
+                            verified={false}
+                            city="Lahore"
+                            specialisation="Editorial & street"
+                            startingPrice={95000}
+                            nextFreeDate="Free on 22 Dec"
+                            onBook={() => setDialogOpen(true)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 5. FormField */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          5. FormField
+                        </h3>
+                        <div className="space-y-4">
+                          <FormField
+                            id="field-valid"
+                            label="Venue address"
+                            helperText="Provide hall name, sector or street."
+                            inputProps={{ placeholder: "Clifton, Block 4, Karachi" }}
+                          />
+                          <FormField
+                            id="field-error"
+                            label="Wedding date"
+                            error="Date cannot be in the past. Select a date at least 7 days ahead."
+                            inputProps={{ defaultValue: "12 Oct 2026" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 6. EmptyState */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          6. EmptyState
+                        </h3>
+                        <EmptyState
+                          message="No gigs match your filters yet. Widen your city or event type."
+                          actionLabel="Clear filters"
+                          onAction={() => {}}
+                        />
+                      </div>
+
+                      {/* 7. SectionHeader */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          7. SectionHeader
+                        </h3>
+                        <SectionHeader
+                          title="Featured portfolios"
+                          lede="Verified wedding photographers available for booking in Karachi."
+                          action={<Button variant="secondary" size="sm">Browse all</Button>}
+                        />
+                      </div>
+
+                    </div>
+                  )}
+
+                  {/* DARK SURFACE PATTERNS */}
+                  {(tabVal === "both-patterns" || tabVal === "dark-patterns") && (
+                    <div
+                      data-surface="dark"
+                      className="border border-[#26324A] rounded-[2px] p-8 bg-midnight text-chalk space-y-12"
+                    >
+                      <div className="flex items-center justify-between border-b border-[#26324A] pb-4">
+                        <span className="font-sans text-xs uppercase tracking-wider text-[#9AA3B5]">
+                          Patterns on Dark Surface
+                        </span>
+                        <GoldDot />
+                      </div>
+
+                      {/* 1. MonthCalendar */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          1. MonthCalendar
+                        </h3>
+                        <p className="font-sans text-xs text-[#9AA3B5]">
+                          Selected date renders solid chalk on dark. Grey indicates booked dates.
+                        </p>
+                        <MonthCalendar
+                          month="December"
+                          year={2026}
+                          daysCount={31}
+                          firstDayOffset={1}
+                          bookedDates={[4, 5, 11, 12, 19, 26]}
+                          selectedDate={selectedDate}
+                          onSelect={setSelectedDate}
+                        />
+                        <p className="font-sans text-xs text-[#9AA3B5] tabular-nums">
+                          Selected date: {selectedDate ? `${selectedDate} December 2026` : "None"}
+                        </p>
+                      </div>
+
+                      {/* 2. PhotoGrid */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          2. PhotoGrid (Proofing mode)
+                        </h3>
+                        <p className="font-sans text-xs text-[#9AA3B5]">
+                          Low-reflection midnight surface for color appraisal. GoldDot marks client favorites.
+                        </p>
+                        <PhotoGrid
+                          items={samplePhotos}
+                          favourites={favourites}
+                          onToggle={handleToggleFavourite}
+                        />
+                      </div>
+
+                      {/* 3. PackageRow */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          3. PackageRow
+                        </h3>
+                        <div className="space-y-2">
+                          <PackageRow
+                            name="Mehndi coverage (6 hours)"
+                            detail="2 photographers, 300 edited frames, proofing gallery"
+                            price={145000}
+                            selected={selectedPackage === "mehndi"}
+                            onClick={() => setSelectedPackage("mehndi")}
+                          />
+                          <PackageRow
+                            name="Full wedding (3 days)"
+                            detail="Mehndi, Baraat, Walima with album and raw archive"
+                            price={380000}
+                            selected={selectedPackage === "full"}
+                            onClick={() => setSelectedPackage("full")}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 4. PhotographerCard */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          4. PhotographerCard
+                        </h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <PhotographerCard
+                            name="Sara Khan"
+                            avatarFallback="SK"
+                            verified={true}
+                            city="Karachi"
+                            specialisation="Weddings & portraits"
+                            startingPrice={145000}
+                            nextFreeDate="Free on 14 Dec"
+                            onBook={() => setDialogOpen(true)}
+                          />
+                          <PhotographerCard
+                            name="Tariq Aziz"
+                            avatarFallback="TA"
+                            verified={false}
+                            city="Lahore"
+                            specialisation="Editorial & street"
+                            startingPrice={95000}
+                            nextFreeDate="Free on 22 Dec"
+                            onBook={() => setDialogOpen(true)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 5. FormField */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          5. FormField
+                        </h3>
+                        <div className="space-y-4">
+                          <FormField
+                            id="dark-field-valid"
+                            label="Venue address"
+                            helperText="Provide hall name, sector or street."
+                            inputProps={{ placeholder: "Gulberg III, Lahore" }}
+                          />
+                          <FormField
+                            id="dark-field-error"
+                            label="Wedding date"
+                            error="Date cannot be in the past. Select a date at least 7 days ahead."
+                            inputProps={{ defaultValue: "12 Oct 2026" }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* 6. EmptyState */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          6. EmptyState
+                        </h3>
+                        <EmptyState
+                          message="No frames selected yet. Click any frame above to mark as favorite."
+                          actionLabel="Reset selection"
+                          onAction={() => setFavourites([])}
+                        />
+                      </div>
+
+                      {/* 7. SectionHeader */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          7. SectionHeader
+                        </h3>
+                        <SectionHeader
+                          title="Proofing selections"
+                          lede="Review and approve keeper frames before album binding."
+                          action={<Button variant="secondary" size="sm">Export list</Button>}
+                        />
+                      </div>
+
+                    </div>
+                  )}
+
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </section>
 
       </main>
