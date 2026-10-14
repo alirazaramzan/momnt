@@ -10,7 +10,7 @@ const buttonVariants = cva(
       variant: {
         // Primary: solid midnight on light, solid chalk on dark. Never brass.
         primary:
-          "bg-primary text-primary-foreground hover:opacity-90 active:opacity-100",
+          "bg-midnight text-chalk [data-surface='dark']_&:bg-chalk [data-surface='dark']_&:text-midnight hover:opacity-90 active:opacity-100",
         // Default alias for primary
         default:
           "bg-primary text-primary-foreground hover:opacity-90 active:opacity-100",

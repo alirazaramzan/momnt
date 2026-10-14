@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bodoni_Moda, Manrope } from "next/font/google";
 import "./globals.css";
 
@@ -17,7 +17,12 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: "momnt",
-  description: "momnt",
+  description: "Verified photography platform for Pakistan",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
