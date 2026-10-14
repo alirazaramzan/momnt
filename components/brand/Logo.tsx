@@ -5,6 +5,7 @@ import { CropMarks } from "./CropMarks";
 export interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "light" | "dark" | "auto";
   withCropMarks?: boolean;
+  withUrdu?: boolean;
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
 }
@@ -12,6 +13,7 @@ export interface LogoProps extends React.HTMLAttributes<HTMLDivElement> {
 export function Logo({
   variant = "auto",
   withCropMarks = false,
+  withUrdu = false,
   size = "md",
   className,
   ...props
@@ -32,19 +34,32 @@ export function Logo({
   }[variant];
 
   const content = (
-    <span
-      className={cn(
-        "inline-flex items-baseline font-display font-normal lowercase tracking-normal select-none",
-        sizeClasses,
-        textColor,
-        withCropMarks ? "px-4 py-2" : "",
-        className
-      )}
-    >
-      <span>momnt</span>
-      <span className="text-brass font-sans" aria-hidden="true">
-        .
+    <span className={cn("inline-flex flex-col items-start select-none", className)}>
+      <span
+        className={cn(
+          "inline-flex items-baseline font-display font-normal lowercase tracking-normal",
+          sizeClasses,
+          textColor,
+          withCropMarks ? "px-4 py-2" : ""
+        )}
+      >
+        <span>momnt</span>
+        <span className="text-brass font-sans" aria-hidden="true">
+          .
+        </span>
       </span>
+      {withUrdu && (
+        <span
+          className={cn(
+            "text-[14px] leading-tight font-normal text-surface-secondary mt-1",
+            withCropMarks ? "px-4" : ""
+          )}
+          dir="rtl"
+          aria-hidden="true"
+        >
+          لمحہ
+        </span>
+      )}
     </span>
   );
 
