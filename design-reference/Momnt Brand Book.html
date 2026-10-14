@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Momnt Brand Book</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F0EC;--fg:#0A1428;--mut:#5B6578;--ln:#CFCFCB;--cd:#F8F7F4;--gd:#C2A267;--c:linear-gradient(var(--gd),var(--gd));box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1428;--fg:#F1F0EC;--mut:#9AA3B5;--ln:#26324A;--cd:#0F1B33}}
+:root[data-theme="dark"]{--bg:#0A1428;--fg:#F1F0EC;--mut:#9AA3B5;--ln:#26324A;--cd:#0F1B33}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Manrope,system-ui,sans-serif}
+.w{max-width:1120px;margin:auto;padding:0 24px}
+section{padding:88px 0;border-top:1px solid var(--ln)}
+h1,h2,h3,.d{font-family:'Bodoni Moda',Didot,'Times New Roman',serif;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin:0}
+h2{font-size:clamp(32px,5vw,54px);max-width:18ch}h3{font-size:24px;margin-bottom:6px}
+.lede{color:var(--mut);max-width:60ch;margin:16px 0 40px}p{margin:.5em 0}.m{color:var(--mut)}.k{font-size:13px;color:var(--mut)}
+.g{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.b{border:1px solid var(--ln);background:var(--cd);padding:22px;border-radius:2px}
+.sub{font-size:20px;margin:48px 0 16px;font-family:'Bodoni Moda',serif}
+.crop{--c:linear-gradient(var(--gd),var(--gd));display:inline-block;padding:.18em .35em;background:var(--c) 0 0/26px 1px,var(--c) 0 0/1px 26px,var(--c) 100% 0/26px 1px,var(--c) 100% 0/1px 26px,var(--c) 0 100%/26px 1px,var(--c) 0 100%/1px 26px,var(--c) 100% 100%/26px 1px,var(--c) 100% 100%/1px 26px;background-repeat:no-repeat}
+.wm{font-family:'Bodoni Moda',Didot,serif;letter-spacing:-.025em;line-height:1;font-weight:400}.wm i{font-style:normal;color:#C2A267}
+.cv{background:#0A1428;color:#F1F0EC;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:40px 0}
+.cv .wm{font-size:clamp(84px,22vw,260px)}
+.row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14px;color:#9AA3B5}
+.big{font-size:clamp(34px,6vw,72px);max-width:16ch}.big em{font-style:italic;color:var(--gd)}
+dl{margin:0}dt{font-family:'Bodoni Moda',serif;font-size:22px;margin-top:22px}dd{margin:4px 0 0;color:var(--mut);max-width:62ch}
+.mb{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}.mb div{min-height:210px;padding:16px;display:flex;align-items:flex-end;font-size:13px;border-radius:2px;color:#F1F0EC}
+.lp{display:grid;place-items:center;min-height:170px;border:1px solid var(--ln);padding:16px;text-align:center;border-radius:2px}
+.ink{background:#0A1428;color:#F1F0EC;border-color:#0A1428}.chalk{background:#F1F0EC;color:#0A1428;border-color:#CFCFCB}.gold{background:#C2A267;color:#0A1428;border-color:#C2A267}
+.sw{min-height:180px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;font-size:13px;border-radius:2px}.sw b{font-family:'Bodoni Moda',serif;font-weight:400;font-size:24px}
+.bar{display:flex;height:34px;border-radius:2px;overflow:hidden;border:1px solid var(--ln)}
+.pr{padding:14px 16px;border-radius:2px;font-size:15px}.pr small{display:block;opacity:.8;font-size:12px}
+.ch{display:inline-block;padding:3px 11px;border:1px solid;border-radius:99px;font-size:13px;margin:2px 4px 2px 0}
+.mk{border:1px solid var(--ln);background:#F1F0EC;color:#0A1428;border-radius:2px;overflow:hidden}
+.mk nav{display:flex;justify-content:space-between;align-items:center;padding:18px 28px;font-size:14px;border-bottom:1px solid #CFCFCB;gap:12px;flex-wrap:wrap}
+.mk .hero{padding:56px 28px 36px}.mk h1{font-size:clamp(36px,6vw,68px);max-width:14ch}
+.srch{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));margin-top:30px;border:1px solid #0A1428;border-radius:2px;max-width:720px}
+.srch div{padding:12px 16px;border-right:1px solid #CFCFCB;font-size:14px}.srch div span{display:block;font-size:12px;color:#5B6578}
+.srch .go{background:#0A1428;color:#F1F0EC;display:grid;place-items:center;border:0;font-weight:600}
+.ph{min-height:170px;padding:12px;display:flex;align-items:flex-end;font-size:12px;color:#F1F0EC;border-radius:2px}
+.btn{display:inline-block;padding:11px 22px;border-radius:2px;font-weight:600;font-size:14px;margin:4px 8px 4px 0;border:1px solid}
+.nope{border-left:2px solid var(--gd);padding-left:16px;margin:14px 0;color:var(--mut)}
+ul{margin:8px 0;padding-left:18px;color:var(--mut)}li{margin:3px 0}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="fm" viewBox="0 0 48 48"><path d="M4 15V4h11M33 4h11v11M44 33v11H33M15 44H4V33" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="24" r="5.5" fill="#C2A267"/></symbol></svg>
+
+<header class="cv"><div class="w" style="width:100%">
+<div class="row"><span>Brand book, version 1</span><span>Working identity, October 2026</span></div></div>
+<div class="w" style="width:100%"><div class="crop"><div class="wm">momnt<i>.</i></div></div>
+<p class="d" style="font-size:clamp(22px,3.4vw,38px);margin-top:28px;max-width:24ch">Every moment, in trusted hands.</p>
+<p style="color:#9AA3B5;margin-top:10px">Book trusted photographers. Find work. Learn from the best.</p></div>
+<div class="w" style="width:100%"><div class="row"><span>Verified photography platform, Pakistan</span><span>S. Abdul Hadi, Ali Raza Ramzan. Supervisor: Ms. Faria Jameel</span></div></div></header>
+
+<section><div class="w"><h2>Photography in Pakistan runs on trust. We make it visible.</h2>
+<p class="lede">Today it runs on DMs, screenshots and word of mouth. Momnt puts verification, booking, gigs, learning and vendors in one calm place.</p>
+<div class="g g2"><div class="b"><h3>Brand promise</h3><p class="big" style="font-size:34px">Every moment, in trusted hands.</p><p>Clients know who is real. Photographers get found, paid and delivered fast. Mentors teach. Vendors reach clients directly.</p></div>
+<div class="b"><h3>Brand purpose</h3><p style="font-size:20px;color:var(--fg)">To make Pakistan's photography community verifiable, bookable and teachable, and to keep every moment safe from first message to final gallery.</p></div></div>
+<div class="g" style="margin-top:20px"><div class="b"><h3>What we observed</h3><p class="m">Clients cannot tell who is genuine, because portfolios get copied. Prices and availability take endless messages to find.</p></div>
+<div class="b"><h3>What we also observed</h3><p class="m">Photographers lose hours sending 20 MB RAW files, then receive screenshots back. Good work still travels by word of mouth.</p></div>
+<div class="b"><h3>Positioning</h3><p class="m">For clients, photographers, mentors and vendors in Pakistan, Momnt is the verified platform where booking, gigs, learning and vendors meet, with clear prices and fast previews.</p></div></div>
+<p class="k" style="margin-top:14px">Framing note: we describe the opportunity we see. We never claim nobody else offers any of this.</p></div></section>
+
+<section><div class="w"><h2>Refined, precise, quietly confident.</h2>
+<p class="lede">Personality: refined, precise, warm, generous, never loud. People hand us their IDs, their photos and their wedding date, so every screen must look careful and competent at once.</p>
+<dl class="g" style="gap:0 40px"><div><dt>Verified by default</dt><dd>Every photographer, mentor and vendor is reviewed by an admin. The badge means something.</dd></div>
+<div><dt>Clear before clever</dt><dd>Prices, packages and availability are visible before anyone writes a message.</dd></div>
+<div><dt>Photographers first</dt><dd>Their work leads. We credit them always and never put our mark across their images.</dd></div>
+<div><dt>Fast as a shutter</dt><dd>Previews in seconds, selections without screenshots, delivery without chasing.</dd></div>
+<div><dt>Private by design</dt><dd>IDs and galleries sit behind access rules, PINs and expiry dates. We say so plainly.</dd></div></dl></div></section>
+
+<section><div class="w"><h2>A name that sounds like a blink.</h2>
+<p class="lede">Momnt drops a vowel and keeps the sound, like a shutter closing on a second. In text write Momnt with a capital M. In the logo it is lowercase with a gold full stop.</p>
+<div class="g g2"><div class="b"><h3>Optional Urdu voice: لمحہ</h3><p class="m">Lamha means a moment. It can sit beside the wordmark as a quiet second line, as in the Rasm system. Have an Urdu reader check it. Urdu interface text is out of scope for now.</p></div>
+<div class="b"><h3>Tagline options</h3><ul><li><b style="color:var(--fg)">Every moment, in trusted hands.</b> Primary promise, used on the site and cover.</li><li>Hold the moment. Short, for social and stickers.</li><li>Verified. Booked. Delivered. For product and email footers.</li><li>Book trusted photographers. Find work. Learn from the best. The functional descriptor, always paired with a promise.</li></ul></div></div>
+<p class="k" style="margin-top:14px">Domain, trademark and Instagram handle availability for Momnt and Lamha is not checked. Verify before committing.</p></div></section>
+
+<section><div class="w"><h2>A private gallery at night, with the lights low.</h2>
+<p class="lede">Moodboard direction: quiet luxury and precision software. Deep midnight grounds, chalk paper, one thin line of brass, and photographs that carry all the colour.</p>
+<div class="mb">
+<div style="background:linear-gradient(180deg,#0A1428,#16254a)">Midnight gallery wall. Dark proofing screens.</div>
+<div style="background:radial-gradient(circle at 70% 30%,#e49b1f,#7a3a0c 45%,#0A1428 85%)">Marigold mehndi night. The one saturated tone, only in photographs.</div>
+<div style="background:#F1F0EC;color:#0A1428;border:1px solid #CFCFCB;background-image:linear-gradient(#C2A267,#C2A267);background-size:60% 1px;background-repeat:no-repeat;background-position:20px 50%">Chalk and brass. A single hairline.</div>
+<div style="background:linear-gradient(160deg,#c9d0da,#8c97a8)">Window light on a studio wall.</div>
+<div style="background:#0A1428;background-image:repeating-linear-gradient(90deg,#26324A 0 58px,transparent 58px 64px);">Contact sheet. Frames in a row.</div>
+<div style="background:#E3E5E8;color:#0A1428;box-shadow:inset 0 0 0 10px #F8F7F4">A print on heavy paper.</div></div>
+<div class="sub">What we borrow, and what we leave</div>
+<div class="g"><div class="b"><h3>Editorial luxury</h3><p class="m"><b style="color:var(--fg)">Borrow:</b> large high-contrast serif, generous empty space, hairlines. <b style="color:var(--fg)">Leave:</b> crests, "Est." dates, heritage pastiche.</p></div>
+<div class="b"><h3>Film contact sheets</h3><p class="m"><b style="color:var(--fg)">Borrow:</b> crop marks, frame numbers, camera-style captions. <b style="color:var(--fg)">Leave:</b> sprocket holes, fake grain borders.</p></div>
+<div class="b"><h3>Precision software</h3><p class="m"><b style="color:var(--fg)">Borrow:</b> crisp tables, calm status chips, a true dark mode. <b style="color:var(--fg)">Leave:</b> gradient blobs, neon, glassy cards.</p></div></div>
+<div class="sub">Translated for Pakistan</div>
+<p class="m" style="max-width:70ch">Photographs do the cultural work: mehndi marigolds, nikkah ivory, baraat gold, walima candlelight. The interface stays neutral so it never fights a client's colours. Original elements only. No reference logo, name or layout is copied.</p>
+<div class="nope"><b style="color:var(--fg)">Avoid:</b> camera-icon clichés, stock smiles, heavy gold and glitter, gradient washes, bubbly rounded shapes, more than two decorative elements in one layout.</div></div></section>
+
+<section><div class="w"><h2>Three logo directions, black and white first.</h2>
+<p class="lede">Concept renders in live type. Final files need the letters outlined and spaced by hand in a vector tool.</p>
+<div class="g"><div><div class="lp chalk"><div class="wm" style="font-size:60px">momnt<i>.</i></div></div><div class="lp ink" style="margin-top:12px"><div class="wm" style="font-size:60px">momnt<i>.</i></div></div><h3 style="margin-top:14px">A. Wordmark</h3><p class="m">Lowercase high-contrast serif with a brass full stop, the moment itself. Reads like a gallery signature and holds at small sizes.</p></div>
+<div><div class="lp chalk"><svg width="88" height="88"><use href="#fm"/></svg></div><div class="lp ink" style="margin-top:12px"><svg width="88" height="88"><use href="#fm"/></svg></div><h3 style="margin-top:14px">B. Focus mark</h3><p class="m">Four crop corners around a gold dot, a viewfinder locking on. Works as an app icon, avatar, favicon and verified seal.</p></div>
+<div><div class="lp chalk"><div style="width:96px;height:96px;border:1px solid #0A1428;border-radius:50%;display:grid;place-items:center"><span class="wm" style="font-size:54px;font-style:italic">m</span></div></div><div class="lp gold" style="margin-top:12px"><div style="width:96px;height:96px;border:1px solid #0A1428;border-radius:50%;display:grid;place-items:center"><span class="wm" style="font-size:54px;font-style:italic">m</span></div></div><h3 style="margin-top:14px">C. Lens monogram</h3><p class="m">Italic m inside a lens ring. The most ornamental, and the weakest at 24 px, where the ring and serif thin out.</p></div></div>
+<div class="nope"><b style="color:var(--fg)">Recommendation:</b> develop A as the primary logo and B as the seal. C lends its italic m to social avatars for mentors and the Academy only.</div>
+<div class="sub">The developed system</div>
+<div class="g"><div class="lp chalk"><div><div class="wm" style="font-size:44px">momnt<i>.</i></div><p class="k" style="color:#5B6578">Primary on chalk. The default.</p></div></div>
+<div class="lp ink"><div><div class="crop"><div class="wm" style="font-size:44px">momnt<i>.</i></div></div><p class="k">Hero lockup with crop marks. Covers and the home page only.</p></div></div>
+<div class="lp ink"><div><svg width="56" height="56"><use href="#fm"/></svg><p class="k">Seal. Favicon, avatar, app icon, verified badge.</p></div></div>
+<div class="lp chalk"><div><span style="display:inline-flex;align-items:center;gap:8px;border:1px solid #1E7A5C;color:#1E7A5C;border-radius:99px;padding:4px 12px;font-size:13px"><svg width="16" height="16" style="color:#1E7A5C"><use href="#fm"/></svg>Verified</span><p class="k" style="color:#5B6578;margin-top:8px">Verified badge on profiles and search.</p></div></div></div>
+<div class="g g2" style="margin-top:20px"><div class="b"><h3>Usage</h3><ul><li>Clear space equals the height of the m on every side.</li><li>Minimum width: wordmark 72 px or 18 mm, seal 20 px or 6 mm.</li><li>Colours: midnight, chalk, brass on midnight only, or one flat ink.</li></ul></div>
+<div class="b"><h3>Never</h3><ul><li>Stretch, tilt, outline, shadow or glow it.</li><li>Set the full stop in any colour other than brass or the surrounding ink.</li><li>Put the wordmark across a photographer's image. Momnt only watermarks its own content.</li></ul></div></div>
+<p class="k" style="margin-top:14px">Production brief: redraw from Bodoni Moda, kern by eye, export SVG, PDF and transparent PNG in midnight, chalk and brass. Thicken hairlines under 64 px.</p></div></section>
+
+<section><div class="w"><h2>Midnight, chalk and one thread of brass.</h2>
+<p class="lede">Dark where photographs are judged, light where work gets done. Brass is a line, never a surface for text.</p>
+<div class="g" style="grid-template-columns:repeat(auto-fit,minmax(170px,1fr))">
+<div class="sw" style="background:#0A1428;color:#F1F0EC"><b>Midnight</b><span>#0A1428<br>RGB 10 20 40<br>Primary. Text, hero, galleries.</span></div>
+<div class="sw" style="background:#F1F0EC;color:#0A1428;border:1px solid #CFCFCB"><b>Chalk</b><span>#F1F0EC<br>RGB 241 240 236<br>Background. The paper.</span></div>
+<div class="sw" style="background:#C2A267;color:#0A1428"><b>Brass</b><span>#C2A267<br>RGB 194 162 103<br>Accent. Lines, the dot, crop marks.</span></div>
+<div class="sw" style="background:#E3E5E8;color:#0A1428"><b>Mist</b><span>#E3E5E8<br>RGB 227 229 232<br>Secondary ground. Cards, tables.</span></div>
+<div class="sw" style="background:#5B6578;color:#F1F0EC"><b>Slate</b><span>#5B6578<br>RGB 91 101 120<br>Secondary text, captions.</span></div>
+<div class="sw" style="background:#1E7A5C;color:#F1F0EC"><b>Verified</b><span>#1E7A5C<br>RGB 30 122 92<br>Verified, paid, delivered only.</span></div>
+<div class="sw" style="background:#B4423A;color:#F1F0EC"><b>Alert</b><span>#B4423A<br>RGB 180 66 58<br>Errors and rejected states.</span></div></div>
+<div class="sub">Proportions across the brand</div>
+<div class="bar"><div style="flex:42;background:#F1F0EC"></div><div style="flex:30;background:#0A1428"></div><div style="flex:12;background:#E3E5E8"></div><div style="flex:6;background:#5B6578"></div><div style="flex:5;background:#C2A267"></div><div style="flex:5;background:#1E7A5C"></div></div>
+<p class="k">Chalk 42, midnight 30, mist 12, slate 6, brass 5, verified green 5 (functional states only).</p>
+<div class="sub">Legible pairings, approximate contrast</div>
+<div class="g" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+<div class="pr" style="background:#F1F0EC;color:#0A1428;border:1px solid #CFCFCB">Midnight on chalk<small>16:1, body text</small></div>
+<div class="pr" style="background:#0A1428;color:#F1F0EC">Chalk on midnight<small>16:1, dark screens</small></div>
+<div class="pr" style="background:#0A1428;color:#C2A267">Brass on midnight<small>7.6:1, labels, large text</small></div>
+<div class="pr" style="background:#F1F0EC;color:#5B6578;border:1px solid #CFCFCB">Slate on chalk<small>5.1:1, captions</small></div>
+<div class="pr" style="background:#F1F0EC;color:#1E7A5C;border:1px solid #CFCFCB">Verified on chalk<small>4.6:1, badges</small></div>
+<div class="pr" style="background:#F1F0EC;color:#C2A267;border:1px dashed #C2A267">Brass on chalk<small>2.1:1, lines only, never text</small></div></div>
+<div class="b" style="margin-top:28px"><h3>Colour rule for photographs</h3><p class="m">Brand colour lives in the frame, never in the photograph. No tints, overlays or filters on a photographer's work. Dark mode is the default for proofing and gallery screens. Light mode for marketing, search and dashboards.</p></div></div></section>
+
+<section><div class="w"><h2>One serif for the statement, one sans for the work.</h2>
+<p class="lede">Both are free on Google Fonts, so the team, freelancers and the site can all use them without a licence.</p>
+<div class="g g2"><div class="b"><p class="k">Display: Bodoni Moda, Regular and Italic</p><p class="d" style="font-size:44px;margin-top:10px">Find the right eye for your day.</p><p class="m">Hero and section headlines at 32 px and above only. Hairlines vanish below that. One display size leads each page. Italic is for a whole phrase, never one decorative word.</p></div>
+<div class="b"><p class="k">Interface and body: Manrope, Regular, Medium and SemiBold</p><p style="font-size:20px;margin-top:10px;font-weight:500">Sara Khan, wedding photographer in Karachi</p><p class="m">Everything functional: navigation, forms, tables, prices, booking statuses. Sentence case. Body 16 px on a 1.6 line height, and lines under 70 characters.</p></div></div>
+<div class="sub">Scale for the website</div>
+<div class="b"><div class="d" style="font-size:56px">Display 56 / 60</div><div class="d" style="font-size:36px;margin-top:8px">Heading 36 / 40</div><div style="font-size:22px;font-weight:600;margin-top:10px">Title 22 / 30, SemiBold</div><div style="margin-top:8px">Body 16 / 26, Regular</div><div class="k" style="margin-top:8px">Caption 13 / 18, Slate. Camera-style details such as f/1.8, 1/250s, ISO 400, Mehndi, Karachi</div></div>
+<p class="k" style="margin-top:12px">Rules: prices, dates and names that must be read correctly always use Manrope with tabular figures. No all-caps labels. Urdu, when added, uses Noto Nastaliq Urdu for names and short phrases only.</p></div></section>
+
+<section><div class="w"><h2>Six elements. Two at a time, at most.</h2>
+<p class="lede">Count the decorative elements in any layout. If there are more than two, remove one. Empty chalk is part of the system.</p>
+<div class="g">
+<div class="b"><h3>Crop marks</h3><div class="crop" style="margin:10px 0"><span class="d" style="font-size:22px">Karachi</span></div><p class="m">Frame the one thing that matters: the hero lockup, a featured photo. Once per screen.</p></div>
+<div class="b"><h3>Camera caption</h3><p style="font-size:13px;margin:12px 0;color:var(--gd)">No. 014, Mehndi, Karachi, f/1.8, 1/250s</p><p class="m">Frame number, event, city and settings under a photo. It makes the site read like a contact sheet.</p></div>
+<div class="b"><h3>Brass hairline</h3><div style="height:1px;background:var(--gd);margin:20px 0"></div><p class="m">The only divider, one pixel. Never a thick rule, never a box shadow.</p></div>
+<div class="b"><h3>Verified seal</h3><span class="ch" style="color:#1E7A5C"><svg width="14" height="14" style="vertical-align:-2px"><use href="#fm"/></svg> Verified</span><p class="m">Only after admin approval. It is the most important mark on the platform, so it is never decorative.</p></div>
+<div class="b"><h3>Gold dot</h3><div style="width:12px;height:12px;border-radius:50%;background:var(--gd);margin:14px 0"></div><p class="m">The full stop of the wordmark. Use for the active state, live workshops and the keeper frame in a proofing set.</p></div>
+<div class="b"><h3>Contact strip</h3><div style="display:flex;gap:4px;margin:12px 0"><div style="flex:1;height:34px;background:#5B6578"></div><div style="flex:1;height:34px;background:#8c97a8"></div><div style="flex:1;height:34px;background:#C2A267;outline:2px solid var(--fg)"></div><div style="flex:1;height:34px;background:#26324A"></div></div><p class="m">A row of frames with one marked. For selections, shot lists and sequences. Six frames at most.</p></div></div></div></section>
+
+<section><div class="w"><h2>True colour, honest light, credit always.</h2>
+<p class="lede">Photographs are the product. The interface steps back so a red jora stays red and a marigold stays loud.</p>
+<div class="g"><div class="b"><h3>What we show</h3><ul><li>Real work from verified photographers, with name and city beside it.</li><li>Weddings: mehndi, mayun, nikkah, baraat, walima. Also portraits, product and brand shoots.</li><li>Details and unplanned moments over posed spins.</li></ul></div>
+<div class="b"><h3>How we treat it</h3><ul><li>No filters, tints or overlays from the brand.</li><li>Crop only to fit a frame, never to hide a face.</li><li>Always credit the photographer. No Momnt watermark on their images.</li></ul></div>
+<div class="b"><h3>Previews and galleries</h3><ul><li>Smart previews at roughly 2048 px. Say "optimised preview", never "lossless".</li><li>Proofing galleries on midnight, with the frame number and a gold dot on favourites.</li><li>Private galleries show their expiry date plainly.</li></ul></div></div>
+<div class="mb" style="margin-top:20px"><div style="background:linear-gradient(160deg,#2b1d14,#b8731e 65%,#f2d49a)">Mehndi. Shoot wide, keep the marigold true.</div><div style="background:linear-gradient(160deg,#d8d4cb,#f4efe6)" ><span style="color:#0A1428">Nikkah. Window light, soft whites.</span></div><div style="background:linear-gradient(160deg,#0f1d3a,#6b4a1e 70%,#c2a267)">Baraat. Keep the gold, lose the yellow.</div><div style="background:linear-gradient(160deg,#9aa3b5,#e3e5e8)"><span style="color:#0A1428">Portrait and brand. Clean, neutral ground.</span></div></div>
+<p class="k" style="margin-top:8px">Placeholders only. Replace with real images from consenting photographers during testing.</p></div></section>
+
+<section><div class="w"><h2>How the website looks and behaves.</h2>
+<p class="lede">The design scope for the build. Four portals share one system, so every screen feels like the same house.</p>
+<div class="mk"><nav><span class="wm" style="font-size:26px">momnt<i>.</i></span><span style="display:flex;gap:22px;flex-wrap:wrap"><span>Photographers</span><span>Gigs</span><span>Academy</span><span>Vendors</span><span style="font-weight:600">Sign in</span></span></nav>
+<div class="hero"><h1 class="d">Every moment, in trusted hands.</h1><p style="color:#5B6578;max-width:48ch;margin-top:16px">Find verified photographers, compare clear prices and book your date, or post a gig and let photographers bid.</p>
+<div class="srch"><div><span>City</span>Karachi</div><div><span>Event</span>Mehndi</div><div><span>Date</span>Add a date</div><div class="go">Search</div></div></div>
+<div style="display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));padding:0 28px 28px"><div class="ph" style="background:linear-gradient(160deg,#2b1d14,#b8731e 70%,#f2d49a)">No. 014, Mehndi, f/1.8</div><div class="ph" style="background:linear-gradient(160deg,#0f1d3a,#c2a267)">No. 021, Baraat, f/2.8</div><div class="ph" style="background:linear-gradient(160deg,#5B6578,#e3e5e8)">No. 007, Portrait, f/1.4</div></div></div>
+<p class="k" style="margin:8px 0 28px">Home page concept. Left-aligned, one large headline, one search bar, three real photographs. Nothing else competes.</p>
+<div class="g g2"><div class="b"><h3>Profile card</h3><div style="display:flex;gap:14px;align-items:center;margin:10px 0"><div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(160deg,#5B6578,#c2a267)"></div><div><b>Sample Photographer</b><br><span class="k">Karachi, weddings and portraits</span></div></div><span class="ch" style="color:#1E7A5C">Verified</span><span class="ch" style="color:var(--mut)">Free on 14 Dec</span><p class="m">From [PKR amount]. Price and availability are always on the card.</p></div>
+<div class="b"><h3>Status chips</h3><span class="ch" style="color:var(--mut)">Pending</span><span class="ch" style="color:var(--gd)">Under review</span><span class="ch" style="color:#1E7A5C">Verified</span><span class="ch" style="color:#B4423A">Rejected</span><p class="k" style="margin-top:10px">Booking flow: Requested, Accepted, Deposit (mock), Shoot done, Delivered, Completed.</p><div style="margin-top:12px"><span class="btn" style="background:var(--fg);color:var(--bg);border-color:var(--fg)">Book this date</span><span class="btn" style="border-color:var(--fg)">Message</span></div></div></div>
+<div class="sub">Sitemap by portal</div>
+<div class="g" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+<div class="b"><h3>Public and client</h3><ul><li>Home, search, compare (up to 3)</li><li>Photographer profile, packages</li><li>Booking, project page, messages</li><li>Proofing and final gallery</li><li>Post a gig, bids, compare, award</li><li>Academy, vendors, locations</li></ul></div>
+<div class="b"><h3>Photographer and mentor</h3><ul><li>Verification status</li><li>Portfolio, packages, calendar</li><li>Requests, bookings, shot list</li><li>Upload previews, deliver</li><li>Gig board, my bids</li><li>My courses and workshops</li></ul></div>
+<div class="b"><h3>Vendor and location</h3><ul><li>Verification status</li><li>Profile, price list, gallery</li><li>Quote requests, orders</li><li>Location calendar and fees</li><li>Reviews</li></ul></div>
+<div class="b"><h3>Admin</h3><ul><li>Verification queue with duplicate flags</li><li>Users, bookings, gigs</li><li>Courses and review moderation</li><li>Reports and platform stats</li></ul></div></div>
+<div class="sub">Design tokens</div>
+<div class="g"><div class="b"><h3>Layout</h3><p class="m">12-column grid, 1120 px maximum, 24 px page margin. Spacing in steps of 8. Hairline borders. No drop shadows, except a single soft lift on menus and dialogs.</p></div>
+<div class="b"><h3>Shape</h3><p class="m">Cards, inputs and buttons use a 2 px radius. Chips and avatars are fully round. Primary button is solid midnight, secondary is outlined. Brass never fills a button.</p></div>
+<div class="b"><h3>Motion</h3><p class="m">One calm moment on load, then movement only in response to the person: 200 ms ease, fade and a small rise. Respect reduced motion.</p></div>
+<div class="b"><h3>Quality floor</h3><p class="m">Mobile first, visible keyboard focus, 4.5:1 text contrast, alt text on every portfolio image, empty states that tell the person what to do next.</p></div></div></div></section>
+
+<section><div class="w"><h2>Calm, exact, and a little bit generous.</h2>
+<div class="g g2" style="margin-top:36px"><div class="b"><h3>How we write</h3><ul><li>Say what happened. "Booking accepted for 14 December" beats "Great news!"</li><li>Short sentences. Plain words. Sentence case everywhere.</li><li>Buttons name the action: Book this date, Send quote, Submit selection.</li><li>Errors say what went wrong and how to fix it. No apologies, no blame.</li><li>No exclamation marks in product copy.</li></ul></div>
+<div class="b"><h3>We never write</h3><ul><li>"Capture your special moments"</li><li>"Stunning", "world-class", "revolutionary"</li><li>"Your big day"</li><li>"Seamless experience"</li><li>Anything that implies a photographer's work is ours</li></ul></div></div>
+<div class="nope">Sample microcopy. Empty gig board: "No gigs match yet. Widen your city or event type." Verification: "Under review. We check documents within 2 working days." [CONFIRM TIMING]</div></div></section>
+
+<section class="cv" style="padding:88px 0"><div class="w"><h2 class="d" style="font-size:clamp(30px,5vw,52px)">Quick reference</h2>
+<div class="g" style="margin-top:36px;color:#F1F0EC">
+<div class="b" style="background:transparent;border-color:#26324A"><h3>Logo</h3><p style="color:#9AA3B5">Lowercase momnt with a brass full stop. Focus mark as the seal. Clear space is one m. Never over a photographer's image.</p></div>
+<div class="b" style="background:transparent;border-color:#26324A"><h3>Colour</h3><p style="color:#9AA3B5">Midnight #0A1428, chalk #F1F0EC, brass #C2A267, mist #E3E5E8, slate #5B6578, verified #1E7A5C, alert #B4423A. Brass is for lines only.</p></div>
+<div class="b" style="background:transparent;border-color:#26324A"><h3>Type</h3><p style="color:#9AA3B5">Bodoni Moda for statements at 32 px and above. Manrope for everything functional. Sentence case.</p></div>
+<div class="b" style="background:transparent;border-color:#26324A"><h3>Elements</h3><p style="color:#9AA3B5">Crop marks, camera caption, brass hairline, verified seal, gold dot, contact strip. Two per layout, at most.</p></div>
+<div class="b" style="background:transparent;border-color:#26324A"><h3>Photography</h3><p style="color:#9AA3B5">True colour, no tints, always credited. Dark galleries, light dashboards.</p></div>
+<div class="b" style="background:transparent;border-color:#26324A"><h3>The two tests</h3><p style="color:#9AA3B5">"This looks like it was made with care." and "I trust this with my photos and my date." If a screen passes only one, it is not finished.</p></div></div>
+<p style="color:#9AA3B5;margin-top:40px;font-size:14px">Not yet covered: print stationery, full social post specs, email templates, Urdu typesetting.</p></div></section>
+</body></html>

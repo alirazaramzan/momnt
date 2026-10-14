@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Momnt Screen Concepts</title>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F0EC;--fg:#0A1428;--mut:#5B6578;--ln:#CFCFCB;--gd:#C2A267;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1428;--fg:#F1F0EC;--mut:#9AA3B5;--ln:#26324A}}
+:root[data-theme="dark"]{--bg:#0A1428;--fg:#F1F0EC;--mut:#9AA3B5;--ln:#26324A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 Manrope,system-ui,sans-serif}
+.w{max-width:1180px;margin:auto;padding:0 24px}
+h1,h2,h3,.d{font-family:'Bodoni Moda',Didot,'Times New Roman',serif;font-weight:400;letter-spacing:-.01em;line-height:1.1;margin:0}
+h1{font-size:clamp(38px,6vw,68px);max-width:16ch}h2{font-size:clamp(28px,4vw,40px)}
+.m{color:var(--mut)}.k{font-size:13px;color:var(--mut)}p{margin:.5em 0}
+.hd{padding:72px 0 40px}.mood{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-top:32px}
+.mood div{border-top:1px solid var(--gd);padding-top:10px}.mood b{font-family:'Bodoni Moda',serif;font-weight:400;font-size:20px;display:block}
+.sc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.5fr);gap:36px;padding:56px 0;border-top:1px solid var(--ln)}
+@media(max-width:860px){.sc{grid-template-columns:1fr;gap:20px}}
+.sc ul{padding-left:18px;color:var(--mut);margin:10px 0}.sc li{margin:4px 0}
+.fr{border:1px solid var(--ln);border-radius:2px;overflow:hidden;background:#F1F0EC;color:#0A1428;--l:#CFCFCB;--s:#5B6578;font-size:14px}
+.fr.dk{background:#0A1428;color:#F1F0EC;--l:#26324A;--s:#9AA3B5;border-color:#26324A}
+.nv{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid var(--l);gap:10px;flex-wrap:wrap}
+.wm{font-family:'Bodoni Moda',serif;font-size:24px;letter-spacing:-.025em;line-height:1}.wm i{font-style:normal;color:#C2A267}
+.pd{padding:24px 22px}.cols{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.ph{display:flex;align-items:flex-end;padding:10px;font-size:12px;color:#F1F0EC;border-radius:2px;min-height:120px}
+.ch{display:inline-block;padding:2px 10px;border:1px solid;border-radius:99px;font-size:12px;margin:2px 4px 2px 0}
+.btn{display:inline-block;padding:9px 18px;border-radius:2px;font-weight:600;font-size:13px;border:1px solid;margin:4px 6px 4px 0}
+.so{background:#0A1428;color:#F1F0EC;border-color:#0A1428}.dk .so{background:#F1F0EC;color:#0A1428;border-color:#F1F0EC}
+.row{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--l);align-items:center}
+.s{color:var(--s)}.tt{font-family:'Bodoni Moda',serif;font-size:32px;line-height:1.1}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}.cal span{aspect-ratio:1;display:grid;place-items:center;font-size:12px;border:1px solid var(--l);border-radius:2px}
+.cal .bk{background:#E3E5E8;color:#9aa3b5}.cal .sl{background:#0A1428;color:#F1F0EC;border-color:#0A1428}
+.gr{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.gr .ph{min-height:130px;position:relative}.gr .dot{position:absolute;top:8px;right:8px;width:10px;height:10px;border-radius:50%;background:#C2A267}
+.ban{border:1px solid var(--gd);padding:12px 16px;border-radius:2px;margin-bottom:18px}
+.chk{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--l)}.chk i{width:16px;height:16px;border:1px solid var(--s);border-radius:2px;flex:none}.chk i.on{background:#C2A267;border-color:#C2A267}
+.phone{width:290px;max-width:100%;margin:26px auto;border:1px solid var(--l);border-radius:26px;padding:20px 16px}
+table{width:100%;border-collapse:collapse}th{font-weight:500;text-align:left;color:var(--s);font-size:12px}td,th{padding:10px 8px 10px 0;border-bottom:1px solid var(--l);vertical-align:middle}
+</style></head><body>
+<div class="w"><div class="hd"><p class="k">Momnt, screen concepts for the designer, version 1</p>
+<h1>One house, five different rooms.</h1>
+<p class="m" style="max-width:62ch;margin-top:16px">Every portal uses the same tokens from the brand book: midnight, chalk, a thread of brass, Bodoni Moda for statements and Manrope for work. What changes is the mood and density. Photos here are gradient placeholders and all names and prices are samples.</p>
+<div class="mood"><div><b>Client</b>Gallery. Airy, slow, photographs lead. Light to browse, dark to choose.</div><div><b>Photographer</b>Studio desk. Efficient, calm, light mode, nothing decorative.</div><div><b>Academy</b>Lecture hall. Dark, focused, one live moment glows.</div><div><b>Vendor and location</b>Catalogue. Plain, practical, prices up front.</div><div><b>Admin</b>Cockpit. Dense but quiet, decisions are the loudest thing.</div></div></div>
+
+<div class="sc"><div><h2>Photographer profile</h2><p class="k">Client portal, light mode</p><ul><li>Big portrait of the work, name set in the display serif.</li><li>Verified seal sits next to the name and nowhere else.</li><li>Packages and prices visible without scrolling. Calendar is the call to action.</li></ul></div>
+<div class="fr"><div class="nv"><span class="wm">momnt<i>.</i></span><span class="s">Photographers, Gigs, Academy, Vendors</span></div><div class="pd cols" style="grid-template-columns:1.3fr 1fr"><div><div class="ph" style="min-height:300px;background:linear-gradient(160deg,#2b1d14,#b8731e 65%,#f2d49a)">No. 014, Mehndi, f/1.8</div><div class="gr" style="margin-top:6px"><div class="ph" style="background:linear-gradient(160deg,#0f1d3a,#c2a267)"></div><div class="ph" style="background:linear-gradient(160deg,#5B6578,#e3e5e8)"></div><div class="ph" style="background:linear-gradient(160deg,#6b4a1e,#e8c58a)"></div></div></div>
+<div><div class="tt">Sara Khan</div><span class="ch" style="color:#1E7A5C">Verified</span><span class="s">Karachi, weddings and portraits</span>
+<div style="margin-top:18px"><div class="row"><span>Mehndi, 6 hours<br><span class="s">2 photographers, 300 edited</span></span><b>[PKR]</b></div><div class="row"><span>Full wedding, 3 days<br><span class="s">Delivery in 4 weeks</span></span><b>[PKR]</b></div></div>
+<div class="cal" id="c1"></div><p class="k">December. Outlined is free, grey is booked.</p><span class="btn so">Request this date</span></div></div></div></div>
+
+<div class="sc"><div><h2>Proofing gallery</h2><p class="k">Client portal, dark mode</p><ul><li>Dark so colour judgement is honest. Nothing but frames and a count.</li><li>A gold dot marks a favourite, the same dot as the logo.</li><li>The selection bar is the only fixed element.</li></ul></div>
+<div class="fr dk"><div class="nv"><span><span class="d" style="font-size:22px">Sara and Ahmed, Mehndi</span> <span class="s">412 frames</span></span><span class="s">All, Favourites, Commented</span></div><div class="pd"><div class="gr" id="g1"></div></div><div class="nv" style="border-top:1px solid var(--l);border-bottom:0"><span>38 of 60 selected</span><span><span class="btn" style="border-color:#26324A">Export list</span><span class="btn so">Submit selection</span></span></div></div></div>
+
+<div class="sc"><div><h2>Compare bids</h2><p class="k">Client portal, light mode</p><ul><li>A calm table. Price, rating, reply time and availability side by side.</li><li>Verified seal on every row. Bids are never shown to other photographers.</li><li>Award is one clear action and it creates a booking.</li></ul></div>
+<div class="fr"><div class="nv"><span class="d" style="font-size:22px">Brand shoot, Lahore, 21 Nov</span><span class="s">3 bids, closes in 2 days</span></div><div class="pd"><table><tr><th>Photographer</th><th>Bid</th><th>Rating</th><th>Replies in</th><th>On the date</th><th></th></tr>
+<tr><td><b>Sara Khan</b><br><span class="ch" style="color:#1E7A5C">Verified</span></td><td>[PKR]</td><td>4.9</td><td>1 hour</td><td>Free</td><td><span class="btn so">Award</span></td></tr>
+<tr><td><b>Omar Siddiqui</b><br><span class="ch" style="color:#1E7A5C">Verified</span></td><td>[PKR]</td><td>4.7</td><td>3 hours</td><td>Free</td><td><span class="btn" style="border-color:#0A1428">Shortlist</span></td></tr>
+<tr><td><b>Hira Anwar</b><br><span class="ch" style="color:#1E7A5C">Verified</span></td><td>[PKR]</td><td>4.8</td><td>1 day</td><td>Free</td><td><span class="btn" style="border-color:#0A1428">Shortlist</span></td></tr></table></div></div></div>
+
+<div class="sc"><div><h2>Photographer dashboard</h2><p class="k">Photographer portal, light mode</p><ul><li>Lists, not cards. A working day should read like a clean schedule.</li><li>The verification banner uses a brass hairline, not a warning colour.</li><li>Pending requests come first because they have a deadline.</li></ul></div>
+<div class="fr"><div class="nv"><span class="wm">momnt<i>.</i></span><span class="s">Overview, Calendar, Gigs, Projects, Academy</span></div><div class="pd"><div class="ban">Verification under review. You can build your profile while we check your documents.</div>
+<div class="cols"><div><h3 style="font-size:22px">Requests to answer</h3><div class="row"><span>Mehndi, Karachi<br><span class="s">14 Dec, 6 hours</span></span><span class="btn so">Reply</span></div><div class="row"><span>Nikkah, Lahore<br><span class="s">20 Dec, 4 hours</span></span><span class="btn" style="border-color:#0A1428">Reply</span></div></div>
+<div><h3 style="font-size:22px">Upcoming shoots</h3><div class="row"><span>Brand shoot<br><span class="s">Sat 18 Oct</span></span><span class="ch" style="color:#1E7A5C">Deposit paid</span></div><div class="row"><span>Baraat<br><span class="s">Sun 9 Nov</span></span><span class="ch s">Accepted</span></div></div>
+<div><h3 style="font-size:22px">Gigs for you</h3><div class="row"><span>Product shoot, Karachi<br><span class="s">Matches your city and style</span></span><span class="s">View</span></div><div class="row"><span>Corporate event, Lahore<br><span class="s">Budget in your range</span></span><span class="s">View</span></div></div></div></div></div></div>
+
+<div class="sc"><div><h2>Shot list on a phone</h2><p class="k">Photographer portal, dark mode, mobile</p><ul><li>Used in dim halls, so dark, large tap targets, one thumb.</li><li>Grouped as essential, details, candid, creative.</li><li>A tick fills with brass. No sound, no confetti.</li></ul></div>
+<div class="fr dk"><div class="phone"><span class="d" style="font-size:24px">Mehndi, shot list</span><p class="s">14 of 32 done</p><div style="height:2px;background:#26324A;margin:8px 0 18px"><div style="width:44%;height:2px;background:#C2A267"></div></div>
+<b>Essential</b><div class="chk"><i class="on"></i>Bride's hands with henna</div><div class="chk"><i class="on"></i>Couple on stage, wide</div><div class="chk"><i></i>Family group, bride's side</div><div style="margin-top:14px"><b>Details</b></div><div class="chk"><i class="on"></i>Jhoomar and dupatta edge</div><div class="chk"><i></i>Decor, before guests sit</div><div class="chk"><i></i>Invitation suite</div></div></div></div>
+
+<div class="sc"><div><h2>Course and live workshop</h2><p class="k">Academy, dark mode</p><ul><li>Feels like a screening room. Video first, lesson list beside it.</li><li>The live session is the only thing with a gold dot.</li><li>Progress is a thin line, the certificate is the reward.</li></ul></div>
+<div class="fr dk"><div class="nv"><span class="wm">momnt<i>.</i> <span class="s" style="font-family:Manrope;font-size:14px">Academy</span></span><span class="s">My learning</span></div><div class="pd cols" style="grid-template-columns:1.6fr 1fr"><div><div class="ph" style="min-height:260px;background:linear-gradient(160deg,#0f1d3a,#6b4a1e 75%,#c2a267)">Lesson 3, Window light</div><div class="tt" style="margin-top:14px">Wedding photography, from first frame to delivery</div><p class="s">Taught by a verified senior photographer. 24 lessons, certificate on completion.</p></div>
+<div><div style="border:1px solid var(--gd);padding:16px;border-radius:2px"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#C2A267;margin-right:8px"></span>Live workshop<div class="tt" style="font-size:24px;margin:8px 0">Lighting a mehndi night</div><p class="s">Sat 18 Oct, 7 pm. 12 seats left.</p><span class="btn so">Reserve a seat</span></div>
+<div class="row"><span>1. Reading the room</span><span class="s">Done</span></div><div class="row"><span>2. Camera set up</span><span class="s">Done</span></div><div class="row"><span>3. Window light</span><span class="s">Playing</span></div></div></div></div></div>
+
+<div class="sc"><div><h2>Location listing</h2><p class="k">Vendor portal, light mode</p><ul><li>Reads like a catalogue page. Fees in a plain table, rules in plain words.</li><li>The fee card states it is paid to the location, never the photographer.</li><li>Quote and order statuses use the same chips as bookings.</li></ul></div>
+<div class="fr"><div class="nv"><span class="wm">momnt<i>.</i></span><span class="s">Vendors, Locations</span></div><div class="pd cols" style="grid-template-columns:1.4fr 1fr"><div><div class="ph" style="min-height:240px;background:linear-gradient(160deg,#c9d0da,#8c97a8)">Rooftop studio, daylight</div><div class="tt" style="margin-top:14px">The Rooftop Studio</div><span class="ch" style="color:#1E7A5C">Verified</span><span class="s">Clifton, Karachi. Studio and rooftop</span><p class="s" style="margin-top:12px">Rules: 3 hour slots, up to 6 crew, no drone, props allowed.</p></div>
+<div><b>Location fee, paid to the location</b><div class="row"><span>Hourly</span><b>[PKR]</b></div><div class="row"><span>Half day</span><b>[PKR]</b></div><div class="row"><span>Full day, commercial</span><b>[PKR]</b></div><span class="btn so" style="margin-top:12px">Request a slot</span></div></div></div></div>
+
+<div class="sc"><div><h2>Verification review</h2><p class="k">Admin portal, light mode</p><ul><li>The densest screen in the product, so the strictest hierarchy.</li><li>Evidence on the left, automatic flags in the middle, decision on the right.</li><li>Flags are amber hairlines, not alarms. Admin makes the call.</li></ul></div>
+<div class="fr"><div class="nv"><span class="d" style="font-size:22px">Review: Sample Photographer</span><span class="ch s">Under review</span></div><div class="pd cols" style="grid-template-columns:1fr 1.3fr 0.9fr"><div><b>Documents</b><div class="ph" style="margin:8px 0;min-height:70px;background:#E3E5E8;color:#5B6578">ID front (dummy)</div><div class="ph" style="min-height:70px;background:#E3E5E8;color:#5B6578">ID back (dummy)</div><p class="s" style="margin-top:10px">Phone verified. Email verified. 14 portfolio images.</p></div>
+<div><b>Automatic flags</b><div class="ban" style="margin-top:8px">2 images look like photos already on Momnt<br><span class="s">Similarity distance 3 and 5. Same EXIF camera.</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><div class="ph" style="background:linear-gradient(160deg,#2b1d14,#b8731e)">Submitted</div><div class="ph" style="background:linear-gradient(160deg,#2f2018,#c0842e)">Existing profile</div></div></div>
+<div><b>Decision</b><p class="s">Flags are signals, not proof.</p><span class="btn so" style="display:block;text-align:center">Approve</span><span class="btn" style="display:block;text-align:center;border-color:#0A1428">Request more info</span><span class="btn" style="display:block;text-align:center;border-color:#B4423A;color:#B4423A">Reject with reason</span></div></div></div></div>
+
+<p class="k" style="padding:24px 0 56px;border-top:1px solid var(--ln)">Still to design: sign in and sign up, booking form, project page, messages, gig posting, vendor quote thread, mobile versions of the client screens.</p></div>
+<script>
+const $=id=>document.getElementById(id),G=['#2b1d14,#b8731e','#0f1d3a,#c2a267','#5B6578,#e3e5e8','#6b4a1e,#e8c58a','#26324A,#8c97a8','#3b2a1a,#d9a24f','#13244a,#6b7aa3','#4a3a2a,#f0d9a8'];
+$('c1').innerHTML=Array.from({length:28},(_,i)=>`<span class="${[4,5,11,12,19,26].includes(i+1)?'bk':i==13?'sl':''}">${i+1}</span>`).join('');
+$('g1').innerHTML=G.concat(G.slice(0,4)).map((c,i)=>`<div class="ph" style="background:linear-gradient(${150+i*17}deg,${c})">${String(i+101).padStart(3,'0')}${[1,4,6,9].includes(i)?'<span class="dot"></span>':''}</div>`).join('');
+</script></body></html>
