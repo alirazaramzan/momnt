@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import {
   Logo,
   Seal,
@@ -8,14 +10,45 @@ import {
   GoldDot,
   PhotoPlaceholder,
 } from "@/components/brand";
-import { Button } from "@/components/ui/button";
-
-export const metadata = {
-  title: "Design System — Momnt",
-  description: "Brand tokens, components, and surface rules for Momnt.",
-};
+import {
+  Button,
+  Input,
+  Textarea,
+  Select,
+  Label,
+  Chip,
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  Stepper,
+  Avatar,
+  Skeleton,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  Toast,
+} from "@/components/ui";
 
 export default function DesignSystemPage() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [toastVisible, setToastVisible] = useState(true);
+
   const colors = [
     { name: "midnight", hex: "#0A1428", role: "Primary text on light, background on dark, solid primary button on light" },
     { name: "chalk", hex: "#F1F0EC", role: "Background on light, primary text on dark, solid primary button on dark" },
@@ -32,12 +65,18 @@ export default function DesignSystemPage() {
     { name: "light hairline", hex: "#CFCFCB", role: "Light-surface 1px border" },
   ];
 
+  const sampleBids = [
+    { photographer: "Sara Khan", city: "Karachi", bid: "PKR 145,000", rating: "4.9", time: "1 hour", dateStatus: "Available" },
+    { photographer: "Omar Siddiqui", city: "Lahore", bid: "PKR 160,000", rating: "4.7", time: "3 hours", dateStatus: "Available" },
+    { photographer: "Hira Anwar", city: "Islamabad", bid: "PKR 135,000", rating: "4.8", time: "1 day", dateStatus: "Available" },
+  ];
+
   return (
     <div className="min-h-screen bg-chalk text-midnight">
       {/* Top Header */}
       <header className="border-b border-[#CFCFCB] px-6 py-6">
         <div className="mx-auto max-w-[1120px] flex items-center justify-between">
-          <Logo size="md" />
+          <Logo size="md" withUrdu />
           <div className="flex items-center gap-3">
             <VerifiedBadge />
             <span className="hidden sm:inline font-sans text-[13px] text-slate">
@@ -121,79 +160,431 @@ export default function DesignSystemPage() {
           </div>
         </section>
 
-        {/* SECTION 2: Surfaces comparison (Light vs Dark) */}
-        <section className="space-y-8">
+        {/* SECTION 2: Core UI Components Showcase on BOTH Surfaces */}
+        <section className="space-y-12">
           <div>
             <h2 className="font-display text-[32px] leading-tight text-midnight">
-              Surfaces
+              Core UI components
             </h2>
             <p className="mt-2 font-sans text-[16px] leading-[26px] text-slate max-w-2xl">
-              Light surface is chalk background with midnight text. Dark surface is midnight background with chalk text. Applied with data-surface=&quot;dark&quot;.
+              Clean 2px radius on inputs, buttons and cards. Round chips. 2px focus ring with 2px offset. Every component demonstrated on both light and dark surfaces.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* TAB SYSTEM FOR SWITCHING SURFACES OR SIDE-BY-SIDE */}
+          <Tabs defaultValue="both" className="w-full">
+            <TabsList>
+              <TabsTrigger value="both">Side-by-side comparison</TabsTrigger>
+              <TabsTrigger value="light">Light surface only</TabsTrigger>
+              <TabsTrigger value="dark">Dark surface only</TabsTrigger>
+            </TabsList>
 
-            {/* LIGHT SURFACE PREVIEW */}
-            <div
-              data-surface="light"
-              className="border border-[#CFCFCB] rounded-[2px] p-8 bg-chalk text-midnight space-y-6"
-            >
-              <div className="flex items-center justify-between border-b border-[#CFCFCB] pb-4">
-                <span className="font-sans text-[13px] uppercase tracking-wider text-slate">
-                  Light surface
-                </span>
-                <GoldDot />
-              </div>
+            {/* SHARED SURFACE RENDER HELPER */}
+            {["both", "light", "dark"].map((tabVal) => (
+              <TabsContent key={tabVal} value={tabVal} className="space-y-12 mt-6">
+                <div className={tabVal === "both" ? "grid grid-cols-1 lg:grid-cols-2 gap-8" : "space-y-8"}>
 
-              <div className="space-y-4">
-                <Logo variant="light" size="lg" />
-                <p className="font-sans text-[16px] leading-[26px] text-midnight">
-                  Momnt connects verified photographers with clients across Pakistan.
-                </p>
-                <CameraCaption number="014" event="Mehndi" aperture="f/1.8" />
-              </div>
+                  {/* LIGHT SURFACE PANEL */}
+                  {(tabVal === "both" || tabVal === "light") && (
+                    <div
+                      data-surface="light"
+                      className="border border-[#CFCFCB] rounded-[2px] p-8 bg-chalk text-midnight space-y-12"
+                    >
+                      <div className="flex items-center justify-between border-b border-[#CFCFCB] pb-4">
+                        <div>
+                          <span className="font-sans text-xs uppercase tracking-wider text-slate block">
+                            Surface: Light
+                          </span>
+                          <span className="font-sans text-sm font-semibold text-midnight">
+                            Chalk ground with midnight text
+                          </span>
+                        </div>
+                        <GoldDot />
+                      </div>
 
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-[#CFCFCB]">
-                <Button variant="default">Book this date</Button>
-                <Button variant="outline">View portfolio</Button>
-                <VerifiedBadge />
-              </div>
-            </div>
+                      {/* 1. BUTTONS */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          1. Button variants &amp; states
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Primary is solid midnight on light. Secondary is 1px outline. Quiet is borderless text.
+                        </p>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Button variant="primary" size="md">Primary md</Button>
+                          <Button variant="primary" size="lg">Primary lg</Button>
+                          <Button variant="secondary" size="md">Secondary</Button>
+                          <Button variant="quiet" size="md">Quiet text</Button>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-3 pt-2">
+                          <Button variant="primary" size="md" loading>Loading</Button>
+                          <Button variant="primary" size="md" disabled>Disabled</Button>
+                          <Button variant="secondary" size="md" disabled>Disabled</Button>
+                          <Button variant="destructive" size="md">Alert button</Button>
+                        </div>
+                      </div>
 
-            {/* DARK SURFACE PREVIEW */}
-            <div
-              data-surface="dark"
-              className="border border-[#26324A] rounded-[2px] p-8 bg-midnight text-chalk space-y-6"
-            >
-              <div className="flex items-center justify-between border-b border-[#26324A] pb-4">
-                <span className="font-sans text-[13px] uppercase tracking-wider text-[#9AA3B5]">
-                  Dark surface (data-surface=&quot;dark&quot;)
-                </span>
-                <GoldDot />
-              </div>
+                      {/* 2. CHIPS */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          2. Chips (fully round)
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Neutral, verified, brass-outline (&quot;Under review&quot;), alert.
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Chip variant="neutral">Pending</Chip>
+                          <Chip variant="brass-outline" dot>Under review</Chip>
+                          <Chip variant="verified" dot>Verified</Chip>
+                          <Chip variant="verified-solid">Deposit paid</Chip>
+                          <Chip variant="alert" dot>Rejected</Chip>
+                        </div>
+                      </div>
 
-              <div className="space-y-4">
-                <Logo variant="dark" size="lg" />
-                <p className="font-sans text-[16px] leading-[26px] text-chalk">
-                  Proofing gallery, shot list, Academy, and auth brand panel live on dark surfaces.
-                </p>
-                <CameraCaption
-                  number="082"
-                  event="Baraat"
-                  aperture="f/2.0"
-                  className="text-[#9AA3B5]"
-                />
-              </div>
+                      {/* 3. FORMS: Input, Textarea, Select, Label */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          3. Form fields (2px radius, 2px focus outline)
+                        </h3>
+                        <div className="space-y-3">
+                          <div>
+                            <Label htmlFor="light-event">Event type</Label>
+                            <Input id="light-event" placeholder="e.g. Mehndi, Nikkah, Baraat" />
+                          </div>
+                          <div>
+                            <Label htmlFor="light-city">City</Label>
+                            <Select id="light-city" defaultValue="karachi">
+                              <option value="karachi">Karachi</option>
+                              <option value="lahore">Lahore</option>
+                              <option value="islamabad">Islamabad</option>
+                              <option value="peshawar">Peshawar</option>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="light-notes" optional>Special requirements</Label>
+                            <Textarea id="light-notes" placeholder="Window light preferred, 200 guests..." />
+                          </div>
+                          <div>
+                            <Label htmlFor="light-disabled">Disabled field</Label>
+                            <Input id="light-disabled" value="Verified and locked by admin" disabled />
+                          </div>
+                        </div>
+                      </div>
 
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-[#26324A]">
-                <Button variant="default">Approve shots</Button>
-                <Button variant="outline">Download proof</Button>
-                <VerifiedBadge />
-              </div>
-            </div>
+                      {/* 4. CARD */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          4. Card (1px hairline, no shadow)
+                        </h3>
+                        <Card>
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle>Sara Khan</CardTitle>
+                              <Chip variant="verified" dot>Verified</Chip>
+                            </div>
+                            <CardDescription>Karachi, weddings and portraits</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-slate">Mehndi package (6 hours)</span>
+                              <span className="font-semibold tabular-nums text-midnight">PKR 145,000</span>
+                            </div>
+                            <p className="mt-2 text-xs text-slate">
+                              Includes 2 photographers, 300 edited frames, online proofing gallery.
+                            </p>
+                          </CardContent>
+                          <CardFooter className="justify-between">
+                            <span className="text-xs text-slate">Free on 14 Dec</span>
+                            <Button variant="primary" size="sm">Request date</Button>
+                          </CardFooter>
+                        </Card>
+                      </div>
 
-          </div>
+                      {/* 5. TABLE */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          5. Table (hairline rows, 12px sentence-case slate headers)
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Photographer</TableHead>
+                              <TableHead>City</TableHead>
+                              <TableHead>Bid amount</TableHead>
+                              <TableHead>Rating</TableHead>
+                              <TableHead className="text-right">Action</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {sampleBids.map((row) => (
+                              <TableRow key={row.photographer}>
+                                <TableCell className="font-medium text-midnight">{row.photographer}</TableCell>
+                                <TableCell className="text-slate">{row.city}</TableCell>
+                                <TableCell className="font-medium">{row.bid}</TableCell>
+                                <TableCell>{row.rating}</TableCell>
+                                <TableCell className="text-right">
+                                  <Button variant="secondary" size="sm">Shortlist</Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* 6. STEPPER */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          6. Stepper (status path)
+                        </h3>
+                        <p className="font-sans text-xs text-slate">
+                          Status path shown as round chips. Current active status is filled.
+                        </p>
+                        <Stepper
+                          steps={["Requested", "Accepted", "Deposit", "Delivered"]}
+                          currentStep={1}
+                        />
+                      </div>
+
+                      {/* 7. AVATAR & SKELETON */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          7. Avatar &amp; Skeleton (mist)
+                        </h3>
+                        <div className="flex items-center gap-4">
+                          <Avatar fallback="SK" size="lg" />
+                          <Avatar fallback="AR" size="md" />
+                          <Avatar fallback="OS" size="sm" />
+                          <div className="flex-1 space-y-2">
+                            <Skeleton className="h-4 w-3/4" />
+                            <Skeleton className="h-3 w-1/2" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 8. DIALOG & TOAST TRIGGER */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-midnight border-b border-[#CFCFCB] pb-2">
+                          8. Dialog &amp; Toast (soft menu shadow)
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-4">
+                          <Button variant="primary" onClick={() => setDialogOpen(true)}>
+                            Open dialog demo
+                          </Button>
+                          <Button variant="secondary" onClick={() => setToastVisible((v) => !v)}>
+                            {toastVisible ? "Hide toast" : "Show toast"}
+                          </Button>
+                        </div>
+                        {toastVisible && (
+                          <div className="pt-2">
+                            <Toast
+                              variant="verified"
+                              title="Booking confirmed"
+                              description="Sara Khan accepted your request for 14 December in Clifton, Karachi."
+                              onClose={() => setToastVisible(false)}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                    </div>
+                  )}
+
+                  {/* DARK SURFACE PANEL */}
+                  {(tabVal === "both" || tabVal === "dark") && (
+                    <div
+                      data-surface="dark"
+                      className="border border-[#26324A] rounded-[2px] p-8 bg-midnight text-chalk space-y-12"
+                    >
+                      <div className="flex items-center justify-between border-b border-[#26324A] pb-4">
+                        <div>
+                          <span className="font-sans text-xs uppercase tracking-wider text-[#9AA3B5] block">
+                            Surface: Dark (data-surface=&quot;dark&quot;)
+                          </span>
+                          <span className="font-sans text-sm font-semibold text-chalk">
+                            Midnight ground with chalk text
+                          </span>
+                        </div>
+                        <GoldDot />
+                      </div>
+
+                      {/* 1. BUTTONS */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          1. Button variants &amp; states
+                        </h3>
+                        <p className="font-sans text-xs text-[#9AA3B5]">
+                          Primary is solid chalk on dark. Secondary is 1px outline. Quiet is borderless text.
+                        </p>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Button variant="primary" size="md">Primary md</Button>
+                          <Button variant="primary" size="lg">Primary lg</Button>
+                          <Button variant="secondary" size="md">Secondary</Button>
+                          <Button variant="quiet" size="md">Quiet text</Button>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-3 pt-2">
+                          <Button variant="primary" size="md" loading>Loading</Button>
+                          <Button variant="primary" size="md" disabled>Disabled</Button>
+                          <Button variant="secondary" size="md" disabled>Disabled</Button>
+                          <Button variant="destructive" size="md">Alert button</Button>
+                        </div>
+                      </div>
+
+                      {/* 2. CHIPS */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          2. Chips (fully round)
+                        </h3>
+                        <p className="font-sans text-xs text-[#9AA3B5]">
+                          Neutral, verified, brass-outline (&quot;Under review&quot;), alert.
+                        </p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Chip variant="neutral">Pending</Chip>
+                          <Chip variant="brass-outline" dot>Under review</Chip>
+                          <Chip variant="verified" dot>Verified</Chip>
+                          <Chip variant="verified-solid">Deposit paid</Chip>
+                          <Chip variant="alert" dot>Rejected</Chip>
+                        </div>
+                      </div>
+
+                      {/* 3. FORMS: Input, Textarea, Select, Label */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          3. Form fields (2px radius, 2px focus outline)
+                        </h3>
+                        <div className="space-y-3">
+                          <div>
+                            <Label htmlFor="dark-event">Event type</Label>
+                            <Input id="dark-event" placeholder="e.g. Mehndi, Nikkah, Baraat" />
+                          </div>
+                          <div>
+                            <Label htmlFor="dark-city">City</Label>
+                            <Select id="dark-city" defaultValue="lahore">
+                              <option value="karachi" className="bg-midnight text-chalk">Karachi</option>
+                              <option value="lahore" className="bg-midnight text-chalk">Lahore</option>
+                              <option value="islamabad" className="bg-midnight text-chalk">Islamabad</option>
+                              <option value="peshawar" className="bg-midnight text-chalk">Peshawar</option>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="dark-notes" optional>Special requirements</Label>
+                            <Textarea id="dark-notes" placeholder="Low-light prime lenses required..." />
+                          </div>
+                          <div>
+                            <Label htmlFor="dark-disabled">Disabled field</Label>
+                            <Input id="dark-disabled" value="Proofing session locked" disabled />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 4. CARD */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          4. Card (1px hairline, no shadow)
+                        </h3>
+                        <Card>
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle>Proofing Gallery</CardTitle>
+                              <Chip variant="verified" dot>38 of 60 picked</Chip>
+                            </div>
+                            <CardDescription>Sara &amp; Ahmed, Mehndi session</CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="flex items-center justify-between text-sm">
+                              <span className="text-[#9AA3B5]">Total frames uploaded</span>
+                              <span className="font-semibold tabular-nums text-chalk">412 frames</span>
+                            </div>
+                            <p className="mt-2 text-xs text-[#9AA3B5]">
+                              Dark surface ensures unbiased color judgment under low light conditions.
+                            </p>
+                          </CardContent>
+                          <CardFooter className="justify-between">
+                            <span className="text-xs text-[#9AA3B5]">Closes on 20 Dec</span>
+                            <Button variant="primary" size="sm">Submit selection</Button>
+                          </CardFooter>
+                        </Card>
+                      </div>
+
+                      {/* 5. TABLE */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          5. Table (hairline rows, 12px sentence-case slate headers)
+                        </h3>
+                        <Table>
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Photographer</TableHead>
+                              <TableHead>City</TableHead>
+                              <TableHead>Bid amount</TableHead>
+                              <TableHead>Rating</TableHead>
+                              <TableHead className="text-right">Action</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {sampleBids.map((row) => (
+                              <TableRow key={row.photographer}>
+                                <TableCell className="font-medium text-chalk">{row.photographer}</TableCell>
+                                <TableCell className="text-[#9AA3B5]">{row.city}</TableCell>
+                                <TableCell className="font-medium">{row.bid}</TableCell>
+                                <TableCell>{row.rating}</TableCell>
+                                <TableCell className="text-right">
+                                  <Button variant="secondary" size="sm">Shortlist</Button>
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
+
+                      {/* 6. STEPPER */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          6. Stepper (status path)
+                        </h3>
+                        <p className="font-sans text-xs text-[#9AA3B5]">
+                          Status path shown as round chips. Current active status is filled chalk.
+                        </p>
+                        <Stepper
+                          steps={["Requested", "Accepted", "Deposit", "Delivered"]}
+                          currentStep={2}
+                        />
+                      </div>
+
+                      {/* 7. AVATAR & SKELETON */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          7. Avatar &amp; Skeleton
+                        </h3>
+                        <div className="flex items-center gap-4">
+                          <Avatar fallback="SK" size="lg" />
+                          <Avatar fallback="AR" size="md" />
+                          <Avatar fallback="OS" size="sm" />
+                          <div className="flex-1 space-y-2">
+                            <Skeleton className="h-4 w-3/4" />
+                            <Skeleton className="h-3 w-1/2" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 8. TOAST PREVIEW ON DARK */}
+                      <div className="space-y-4">
+                        <h3 className="font-sans text-base font-semibold text-chalk border-b border-[#26324A] pb-2">
+                          8. Toast notification on dark surface
+                        </h3>
+                        <Toast
+                          variant="alert"
+                          title="Shot list update required"
+                          description="3 essential group portraits have not been marked complete yet."
+                        />
+                      </div>
+
+                    </div>
+                  )}
+
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </section>
 
         {/* SECTION 3: Brand components detail */}
@@ -220,8 +611,8 @@ export default function DesignSystemPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div className="p-8 bg-chalk border border-[#CFCFCB] rounded-[2px] flex flex-col items-start gap-4">
-                <span className="font-sans text-[13px] text-slate">Standard wordmark</span>
-                <Logo size="lg" />
+                <span className="font-sans text-[13px] text-slate">Standard wordmark with optional Urdu</span>
+                <Logo size="lg" withUrdu />
               </div>
 
               <div className="p-8 bg-chalk border border-[#CFCFCB] rounded-[2px] flex flex-col items-start gap-4">
@@ -420,6 +811,45 @@ export default function DesignSystemPage() {
         </section>
 
       </main>
+
+      {/* DIALOG DEMO */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent onClose={() => setDialogOpen(false)}>
+          <DialogHeader>
+            <DialogTitle>Confirm date request</DialogTitle>
+            <DialogDescription>
+              Your request will be sent directly to Sara Khan for review.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-2">
+            <div className="border border-border p-3 rounded-[2px] bg-muted/20 space-y-1">
+              <div className="flex justify-between text-xs font-sans">
+                <span className="text-surface-secondary">Event</span>
+                <span className="font-medium text-foreground">Mehndi, Karachi</span>
+              </div>
+              <div className="flex justify-between text-xs font-sans">
+                <span className="text-surface-secondary">Requested date</span>
+                <span className="font-medium text-foreground tabular-nums">14 December 2026</span>
+              </div>
+              <div className="flex justify-between text-xs font-sans">
+                <span className="text-surface-secondary">Estimated deposit</span>
+                <span className="font-medium text-foreground tabular-nums">PKR 35,000 (mock)</span>
+              </div>
+            </div>
+            <p className="text-xs text-surface-secondary">
+              Free to reschedule up to 14 days before your event. Verification documents checked within 2 working days.
+            </p>
+          </div>
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" onClick={() => setDialogOpen(false)}>
+              Send booking request
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="border-t border-[#CFCFCB] px-6 py-12 mt-24">
