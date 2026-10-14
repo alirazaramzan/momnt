@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { PhotoPlaceholder, type PhotoTone, GoldDot } from "@/components/brand";
 import { cn } from "@/lib/utils";

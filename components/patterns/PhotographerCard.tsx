@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Avatar, Chip, Button } from "@/components/ui";
 import { VerifiedBadge } from "@/components/brand";
