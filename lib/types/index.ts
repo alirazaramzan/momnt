@@ -59,6 +59,7 @@ export interface Photographer {
   nextFree: string; // date string e.g. "14 Dec" or "2026-12-14"
   avatarSrc?: string;
   bio?: string;
+  role?: "photographer" | "videographer" | "both";
 }
 
 export interface Booking {

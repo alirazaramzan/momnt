@@ -56,7 +56,7 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
         className={cn(
-          "relative z-50 w-full max-w-lg rounded-[2px] border border-border bg-card p-6 text-card-foreground shadow-menu",
+          "relative z-50 w-full max-w-lg rounded-[2px] border border-border bg-chalk text-midnight [data-surface='dark']_&:bg-midnight [data-surface='dark']_&:text-chalk p-6 shadow-menu",
           "animate-in fade-in zoom-in-95 duration-200",
           className
         )}
