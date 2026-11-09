@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FormField } from "@/components/patterns";
 import { Button, Label } from "@/components/ui";
 import { cn } from "@/lib/utils";
+import { signUp } from "../actions";
 
 interface RoleOption {
   id: "client" | "photographer" | "vendor";
@@ -36,15 +36,16 @@ const ROLES: RoleOption[] = [
 ];
 
 export default function SignUpPage() {
-  const router = useRouter();
   const [selectedRole, setSelectedRole] = useState<RoleOption["id"]>("client");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [fullNameError, setFullNameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
 
@@ -66,15 +67,21 @@ export default function SignUpPage() {
 
     if (!valid) return;
 
-    // Simulate account creation
+    // On success the server action redirects to /sign-in with a
+    // "check your email" message, because email confirmation is required.
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      // Route to chosen role portal
-      if (selectedRole === "client") router.push("/client");
-      else if (selectedRole === "photographer") router.push("/photographer");
-      else router.push("/vendor");
-    }, 1000);
+    const result = await signUp({
+      full_name: fullName,
+      email,
+      password,
+      role: selectedRole,
+    });
+    setIsLoading(false);
+    if (!result.ok) {
+      setFullNameError(result.fieldErrors.full_name ?? "");
+      setEmailError(result.fieldErrors.email ?? result.fieldErrors.role ?? result.formError ?? "");
+      setPasswordError(result.fieldErrors.password ?? "");
+    }
   };
 
   const handleRoleKeyDown = (e: React.KeyboardEvent, index: number) => {
@@ -148,6 +155,22 @@ export default function SignUpPage() {
             })}
           </div>
         </div>
+
+        {/* Full Name Field */}
+        <FormField
+          id="signup-full-name"
+          label="Full name"
+          error={fullNameError}
+          inputProps={{
+            type: "text",
+            autoComplete: "name",
+            value: fullName,
+            onChange: (e) => {
+              setFullName(e.target.value);
+              if (fullNameError) setFullNameError("");
+            },
+          }}
+        />
 
         {/* Email Field */}
         <FormField

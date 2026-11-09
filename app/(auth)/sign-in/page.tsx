@@ -1,13 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FormField } from "@/components/patterns";
 import { Button, Input, Label } from "@/components/ui";
+import { requestPasswordReset, signIn } from "../actions";
+
+/**
+ * Messages driven by the URL: ?check=email after sign-up, ?error=link when an
+ * email link has expired. Reads the query string, so it sits behind Suspense
+ * and the rest of the page still prerenders (Cache Components).
+ */
+function SignInNotice() {
+  const searchParams = useSearchParams();
+
+  if (searchParams.get("error") === "link") {
+    return (
+      <p role="alert" className="text-xs text-alert font-medium font-sans leading-tight">
+        That link has expired or was already used. Sign in, or request a new link.
+      </p>
+    );
+  }
+
+  if (searchParams.get("check") !== "email") return null;
+
+  // Sign-up confirmation banner state (same style as the reset banner)
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="border border-[#1E7A5C]/40 bg-[#1E7A5C]/10 p-3.5 rounded-[2px] text-xs font-sans text-midnight space-y-1"
+    >
+      <p className="font-semibold text-[#1E7A5C]">Check your email to confirm your account</p>
+      <p className="text-slate">
+        Open the link we sent you, then sign in here.
+      </p>
+    </div>
+  );
+}
 
 export default function SignInPage() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -16,7 +49,7 @@ export default function SignInPage() {
   const [resetSent, setResetSent] = useState(false);
   const [resetLoading, setResetLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     let valid = true;
 
@@ -38,24 +71,29 @@ export default function SignInPage() {
 
     if (!valid) return;
 
+    // On success the server action redirects to the dashboard for the role.
     setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      // Route to client portal as sample sign-in destination
-      router.push("/client");
-    }, 1000);
+    const result = await signIn({ email, password });
+    setIsLoading(false);
+    if (!result.ok) {
+      setEmailError(result.fieldErrors.email ?? "");
+      setPasswordError(result.fieldErrors.password ?? result.formError ?? "");
+    }
   };
 
-  const handleForgotPassword = () => {
+  const handleForgotPassword = async () => {
     if (!email.trim() || !email.includes("@")) {
       setEmailError("Enter an email like name@example.com");
       return;
     }
     setResetLoading(true);
-    setTimeout(() => {
-      setResetLoading(false);
+    const result = await requestPasswordReset({ email });
+    setResetLoading(false);
+    if (result.ok) {
       setResetSent(true);
-    }, 800);
+    } else {
+      setEmailError(result.fieldErrors.email ?? result.formError ?? "");
+    }
   };
 
   return (
@@ -69,6 +107,10 @@ export default function SignInPage() {
           Access your bookings, proposals, and projects.
         </p>
       </div>
+
+      <Suspense fallback={null}>
+        <SignInNotice />
+      </Suspense>
 
       {/* Password reset confirmation banner state */}
       {resetSent && (

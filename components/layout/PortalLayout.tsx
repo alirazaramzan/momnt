@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand";
 import { Button } from "@/components/ui";
 import { SkipToContent } from "./SkipToContent";
 import { cn } from "@/lib/utils";
+import { signOut } from "@/app/(auth)/actions";
 import { MoreHorizontal, X } from "lucide-react";
 
 export interface PortalNavItem {
@@ -77,15 +78,16 @@ export function PortalLayout({
                 Public site
               </Button>
             </Link>
-            <Link href="/sign-in" tabIndex={-1}>
+            <form action={signOut}>
               <Button
+                type="submit"
                 variant="quiet"
                 size="sm"
                 className="font-sans text-xs text-midnight font-medium"
               >
                 Sign out
               </Button>
-            </Link>
+            </form>
           </div>
         </div>
       </header>
