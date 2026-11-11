@@ -4,7 +4,7 @@
 Momnt is a verified photography platform for Pakistan (web). Portals: public, client or agency, photographer or mentor, vendor or location owner, admin. English only. Payments are mock only.
 
 ## Stack
-Next.js App Router, TypeScript, Tailwind, shadcn/ui, lucide-react. Screens are presentational. They take props and read from /lib/mock. No database calls yet.
+Next.js App Router, TypeScript, Tailwind, shadcn/ui, lucide-react. Screens are presentational. They take props and read from /lib/mock.
 
 ## Brand tokens (the only colours allowed)
 midnight #0A1428, chalk #F1F0EC, brass #C2A267, mist #E3E5E8, slate #5B6578, verified #1E7A5C, alert #B4423A.
@@ -53,3 +53,13 @@ Every data screen has designed loading (skeleton in mist), empty (one line telli
 
 ## Process
 Never redesign a screen unless asked. Never add features, copy or colours that were not requested. Reuse /components/ui and /components/patterns before creating anything new. After building, open the page in the browser, screenshot at 1440px and 390px wide, fix visible problems, then report against the acceptance checklist. If something in a prompt conflicts with these rules, stop and ask.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
