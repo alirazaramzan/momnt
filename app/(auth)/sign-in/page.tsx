@@ -71,9 +71,10 @@ export default function SignInPage() {
 
     if (!valid) return;
 
-    // On success the server action redirects to the dashboard for the role.
+    // On success the server action redirects to ?next= (if allowed) or the dashboard for the role.
     setIsLoading(true);
-    const result = await signIn({ email, password });
+    const next = new URLSearchParams(window.location.search).get("next");
+    const result = await signIn({ email, password, next });
     setIsLoading(false);
     if (!result.ok) {
       setEmailError(result.fieldErrors.email ?? "");

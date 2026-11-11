@@ -37,6 +37,8 @@ export const signUpSchema = z.object({
 export const signInSchema = z.object({
   email,
   password: z.string({ error: "Enter your password" }).min(1, { error: "Enter your password" }),
+  // Return URL from ?next=. Checked again with safeNextPath and the role before use.
+  next: z.string().max(512).nullish(),
 });
 
 export const passwordResetRequestSchema = z.object({ email });

@@ -1,9 +1,28 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { SectionHeader } from "@/components/patterns";
-import { Button, Card } from "@/components/ui";
+import { Button, Card, Skeleton } from "@/components/ui";
 import { VerifiedBadge } from "@/components/brand";
 import { MOCK_PHOTOGRAPHERS, MOCK_BOOKINGS } from "@/lib/mock";
+import { requirePhotographer, VERIFICATION_NOTICE } from "@/lib/auth/requireRole";
+
+/**
+ * Reads the signed-in photographer's verification_status. Sits behind
+ * Suspense because it reads cookies. Unknown or failed reads still render.
+ */
+async function VerificationNotice() {
+  const { verification } = await requirePhotographer({ returnTo: "/photographer" });
+  const isProblem = verification.status === "rejected" || verification.status === "unavailable";
+
+  return (
+    <div
+      role={isProblem ? "alert" : "status"}
+      className={`border ${isProblem ? "border-alert" : "border-[#C2A267]"} rounded-[2px] p-4 bg-chalk text-midnight`}
+    >
+      <p className="font-sans text-sm font-medium">{VERIFICATION_NOTICE[verification.status]}</p>
+    </div>
+  );
+}
 
 export default function PhotographerOverviewPage() {
   const photographer = MOCK_PHOTOGRAPHERS[0]; // Sara Khan
@@ -31,12 +50,10 @@ export default function PhotographerOverviewPage() {
         </Link>
       </div>
 
-      {/* Verification status notice with brass hairline */}
-      <div className="border border-[#C2A267] rounded-[2px] p-4 bg-chalk text-midnight">
-        <p className="font-sans text-sm font-medium">
-          Verified member. Profile listed on public discovery and eligible for gig marketplace bids.
-        </p>
-      </div>
+      {/* Verification status notice with brass hairline (reads verification_status) */}
+      <Suspense fallback={<Skeleton className="h-[54px] w-full" />}>
+        <VerificationNotice />
+      </Suspense>
 
       {/* Requests to answer */}
       <div className="space-y-4">

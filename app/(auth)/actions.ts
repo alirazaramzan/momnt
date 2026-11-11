@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { dashboardPathForRole } from "@/lib/auth/roles";
+import { canRoleAccessPath, dashboardPathForRole, safeNextPath } from "@/lib/auth/roles";
 import {
   passwordResetRequestSchema,
   signInSchema,
@@ -98,7 +98,8 @@ export async function signIn(input: unknown): Promise<AuthActionResult<SignInFie
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { email, password, next } = parsed.data;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     switch (error.code) {
@@ -120,7 +121,14 @@ export async function signIn(input: unknown): Promise<AuthActionResult<SignInFie
     .eq("id", data.user.id)
     .single();
 
-  redirect(dashboardPathForRole(profile?.role));
+  // Go back to the page that sent them to sign in, but only if it is a
+  // same-site path this role may open. Otherwise use their dashboard.
+  const returnTo = safeNextPath(next);
+  redirect(
+    returnTo && canRoleAccessPath(profile?.role, returnTo)
+      ? returnTo
+      : dashboardPathForRole(profile?.role)
+  );
 }
 
 // ---------------------------------------------------------------------------
