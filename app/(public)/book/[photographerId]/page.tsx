@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { MOCK_PHOTOGRAPHERS } from "@/lib/mock";
+import { loadPublicPhotographerWithPackages } from "@/lib/photographers/public-packages";
 import { BookingFormClient } from "./BookingFormClient";
 
 export function generateStaticParams() {
@@ -9,22 +10,26 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function BookingPage({
+async function BookingPageContent({
   params,
 }: {
   params: Promise<{ photographerId: string }>;
 }) {
   const { photographerId } = await params;
-
-  const photographer =
-    MOCK_PHOTOGRAPHERS.find((p) => p.id === photographerId) ||
-    MOCK_PHOTOGRAPHERS.find((p) => p.id === `ph-${photographerId}`) ||
-    MOCK_PHOTOGRAPHERS[0];
+  const photographer = await loadPublicPhotographerWithPackages(photographerId);
 
   if (!photographer) {
     notFound();
   }
 
+  return <BookingFormClient photographer={photographer} />;
+}
+
+export default function BookingPage({
+  params,
+}: {
+  params: Promise<{ photographerId: string }>;
+}) {
   return (
     <Suspense
       fallback={
@@ -33,7 +38,7 @@ export default async function BookingPage({
         </div>
       }
     >
-      <BookingFormClient photographer={photographer} />
+      <BookingPageContent params={params} />
     </Suspense>
   );
 }

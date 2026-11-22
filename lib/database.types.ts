@@ -72,6 +72,13 @@ export type Database = {
             referencedRelation: "photographer_profiles"
             referencedColumns: ["profile_id"]
           },
+          {
+            foreignKeyName: "availability_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bids: {
@@ -81,7 +88,7 @@ export type Database = {
           id: string
           message: string | null
           package_id: string | null
-          photographer_id: string
+          photographer_id: string | null
           price: number
           status: Database["public"]["Enums"]["bid_status"]
           updated_at: string
@@ -92,7 +99,7 @@ export type Database = {
           id?: string
           message?: string | null
           package_id?: string | null
-          photographer_id: string
+          photographer_id?: string | null
           price: number
           status?: Database["public"]["Enums"]["bid_status"]
           updated_at?: string
@@ -103,7 +110,7 @@ export type Database = {
           id?: string
           message?: string | null
           package_id?: string | null
-          photographer_id?: string
+          photographer_id?: string | null
           price?: number
           status?: Database["public"]["Enums"]["bid_status"]
           updated_at?: string
@@ -130,12 +137,19 @@ export type Database = {
             referencedRelation: "photographer_profiles"
             referencedColumns: ["profile_id"]
           },
+          {
+            foreignKeyName: "bids_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
         ]
       }
       bookings: {
         Row: {
           budget: number | null
-          client_id: string
+          client_id: string | null
           created_at: string
           duration_hours: number | null
           event_date: string
@@ -144,7 +158,7 @@ export type Database = {
           id: string
           location: string
           package_id: string | null
-          photographer_id: string
+          photographer_id: string | null
           requirements: string | null
           source_gig_id: string | null
           start_time: string | null
@@ -153,7 +167,7 @@ export type Database = {
         }
         Insert: {
           budget?: number | null
-          client_id: string
+          client_id?: string | null
           created_at?: string
           duration_hours?: number | null
           event_date: string
@@ -162,7 +176,7 @@ export type Database = {
           id?: string
           location: string
           package_id?: string | null
-          photographer_id: string
+          photographer_id?: string | null
           requirements?: string | null
           source_gig_id?: string | null
           start_time?: string | null
@@ -171,7 +185,7 @@ export type Database = {
         }
         Update: {
           budget?: number | null
-          client_id?: string
+          client_id?: string | null
           created_at?: string
           duration_hours?: number | null
           event_date?: string
@@ -180,7 +194,7 @@ export type Database = {
           id?: string
           location?: string
           package_id?: string | null
-          photographer_id?: string
+          photographer_id?: string | null
           requirements?: string | null
           source_gig_id?: string | null
           start_time?: string | null
@@ -217,6 +231,13 @@ export type Database = {
             referencedColumns: ["profile_id"]
           },
           {
+            foreignKeyName: "bookings_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "bookings_source_gig_id_fkey"
             columns: ["source_gig_id"]
             isOneToOne: false
@@ -231,7 +252,7 @@ export type Database = {
           budget_max: number | null
           budget_min: number | null
           city: string
-          client_id: string
+          client_id: string | null
           created_at: string
           description: string | null
           event_date: string
@@ -248,7 +269,7 @@ export type Database = {
           budget_max?: number | null
           budget_min?: number | null
           city: string
-          client_id: string
+          client_id?: string | null
           created_at?: string
           description?: string | null
           event_date: string
@@ -265,7 +286,7 @@ export type Database = {
           budget_max?: number | null
           budget_min?: number | null
           city?: string
-          client_id?: string
+          client_id?: string | null
           created_at?: string
           description?: string | null
           event_date?: string
@@ -387,6 +408,13 @@ export type Database = {
             referencedRelation: "photographer_profiles"
             referencedColumns: ["profile_id"]
           },
+          {
+            foreignKeyName: "packages_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
         ]
       }
       photographer_profiles: {
@@ -479,6 +507,13 @@ export type Database = {
             referencedRelation: "photographer_profiles"
             referencedColumns: ["profile_id"]
           },
+          {
+            foreignKeyName: "portfolio_images_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
         ]
       }
       profiles: {
@@ -523,9 +558,9 @@ export type Database = {
           comment: string | null
           created_at: string
           id: string
-          photographer_id: string
+          photographer_id: string | null
           rating: number
-          reviewer_id: string
+          reviewer_id: string | null
           updated_at: string
         }
         Insert: {
@@ -533,9 +568,9 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
-          photographer_id: string
+          photographer_id?: string | null
           rating: number
-          reviewer_id: string
+          reviewer_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -543,9 +578,9 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
-          photographer_id?: string
+          photographer_id?: string | null
           rating?: number
-          reviewer_id?: string
+          reviewer_id?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -562,6 +597,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "photographer_profiles"
             referencedColumns: ["profile_id"]
+          },
+          {
+            foreignKeyName: "reviews_photographer_id_fkey"
+            columns: ["photographer_id"]
+            isOneToOne: false
+            referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "reviews_reviewer_id_fkey"
@@ -652,6 +694,47 @@ export type Database = {
       }
     }
     Views: {
+      photographer_search_cards: {
+        Row: {
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          is_verified: boolean | null
+          is_videographer: boolean | null
+          next_free_date: string | null
+          package_count: number | null
+          packages: Json | null
+          portfolio_preview: Json | null
+          rating: number | null
+          review_count: number | null
+          specializations: string[] | null
+          starting_price: number | null
+          styles: string[] | null
+          verification_status:
+            | Database["public"]["Enums"]["verification_status"]
+            | null
+          years_experience: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "photographer_profiles_profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "photographer_profiles_profile_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "profiles_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles_public: {
         Row: {
           avatar_url: string | null
@@ -684,9 +767,48 @@ export type Database = {
       }
     }
     Functions: {
+      account_deletion_blockers: {
+        Args: { p_user_id: string }
+        Returns: {
+          active_bookings: number
+          gigs_in_progress: number
+        }[]
+      }
       current_user_role: {
         Args: never
         Returns: Database["public"]["Enums"]["user_role"]
+      }
+      get_photographers_for_compare: {
+        Args: { p_ids: string[] }
+        Returns: {
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string | null
+          is_verified: boolean | null
+          is_videographer: boolean | null
+          next_free_date: string | null
+          package_count: number | null
+          packages: Json | null
+          portfolio_preview: Json | null
+          rating: number | null
+          review_count: number | null
+          specializations: string[] | null
+          starting_price: number | null
+          styles: string[] | null
+          verification_status:
+            | Database["public"]["Enums"]["verification_status"]
+            | null
+          years_experience: number | null
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "photographer_search_cards"
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       gig_open_for_bids: { Args: { p_gig_id: string }; Returns: boolean }
       has_bid_on_gig: { Args: { p_gig_id: string }; Returns: boolean }
@@ -700,6 +822,43 @@ export type Database = {
       paths_in_folder: {
         Args: { p_folder: string; p_paths: string[] }
         Returns: boolean
+      }
+      search_photographers: {
+        Args: {
+          p_available_date?: string
+          p_city?: string
+          p_event_type?: string
+          p_max_budget?: number
+          p_min_budget?: number
+          p_page?: number
+          p_page_size?: number
+          p_role?: string
+          p_sort?: string
+          p_style?: string
+          p_verified_only?: boolean
+        }
+        Returns: {
+          avatar_url: string
+          bio: string
+          city: string
+          created_at: string
+          full_name: string
+          id: string
+          is_verified: boolean
+          is_videographer: boolean
+          next_free_date: string
+          package_count: number
+          packages: Json
+          portfolio_preview: Json
+          rating: number
+          review_count: number
+          specializations: string[]
+          starting_price: number
+          styles: string[]
+          total_count: number
+          verification_status: Database["public"]["Enums"]["verification_status"]
+          years_experience: number
+        }[]
       }
     }
     Enums: {

@@ -32,6 +32,34 @@ export interface PortfolioItem {
   credit?: string;
   event?: string;
   aperture?: string;
+  src?: string;
+}
+
+export interface PhotographerAvailabilitySummary {
+  month: string;
+  year: number;
+  daysCount: number;
+  firstDayOffset: number; // 0 for Mon .. 6 for Sun
+  bookedDates: number[];
+  defaultSelectedDate: number | null;
+}
+
+export interface PhotographerReviewItem {
+  id: string;
+  rating: number;
+  comment: string;
+  reviewerName: string;
+  dateLabel: string;
+}
+
+export interface PhotographerReviewStats {
+  averageRating: number;
+  reviewCount: number;
+}
+
+export interface PackageAddonItem {
+  name: string;
+  price: number; // PKR
 }
 
 export interface Package {
@@ -41,6 +69,8 @@ export interface Package {
   photographers: number;
   editedPhotos: number;
   deliveryTime: string;
+  deliveryDays?: number;
+  addons?: PackageAddonItem[];
   price: number; // PKR - sample price
 }
 
@@ -60,6 +90,16 @@ export interface Photographer {
   avatarSrc?: string;
   bio?: string;
   role?: "photographer" | "videographer" | "both";
+  yearsExperience?: number | null;
+  socialLinks?: {
+    instagram?: string;
+    facebook?: string;
+    website?: string;
+  };
+  availabilitySummary?: PhotographerAvailabilitySummary;
+  reviewStats?: PhotographerReviewStats;
+  reviews?: PhotographerReviewItem[];
+  isPreviewForOwnerOrAdmin?: boolean;
 }
 
 export interface Booking {
