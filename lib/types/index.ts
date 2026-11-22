@@ -97,6 +97,7 @@ export interface Photographer {
     website?: string;
   };
   availabilitySummary?: PhotographerAvailabilitySummary;
+  unavailableIsoDates?: string[];
   reviewStats?: PhotographerReviewStats;
   reviews?: PhotographerReviewItem[];
   isPreviewForOwnerOrAdmin?: boolean;

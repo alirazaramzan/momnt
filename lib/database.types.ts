@@ -151,6 +151,7 @@ export type Database = {
           budget: number | null
           client_id: string | null
           created_at: string
+          deposit_amount: number | null
           duration_hours: number | null
           event_date: string
           event_type: string
@@ -159,6 +160,10 @@ export type Database = {
           location: string
           package_id: string | null
           photographer_id: string | null
+          price: number | null
+          proposal_note: string | null
+          proposed_date: string | null
+          proposed_package_id: string | null
           requirements: string | null
           source_gig_id: string | null
           start_time: string | null
@@ -169,6 +174,7 @@ export type Database = {
           budget?: number | null
           client_id?: string | null
           created_at?: string
+          deposit_amount?: number | null
           duration_hours?: number | null
           event_date: string
           event_type: string
@@ -177,6 +183,10 @@ export type Database = {
           location: string
           package_id?: string | null
           photographer_id?: string | null
+          price?: number | null
+          proposal_note?: string | null
+          proposed_date?: string | null
+          proposed_package_id?: string | null
           requirements?: string | null
           source_gig_id?: string | null
           start_time?: string | null
@@ -187,6 +197,7 @@ export type Database = {
           budget?: number | null
           client_id?: string | null
           created_at?: string
+          deposit_amount?: number | null
           duration_hours?: number | null
           event_date?: string
           event_type?: string
@@ -195,6 +206,10 @@ export type Database = {
           location?: string
           package_id?: string | null
           photographer_id?: string | null
+          price?: number | null
+          proposal_note?: string | null
+          proposed_date?: string | null
+          proposed_package_id?: string | null
           requirements?: string | null
           source_gig_id?: string | null
           start_time?: string | null
@@ -235,6 +250,13 @@ export type Database = {
             columns: ["photographer_id"]
             isOneToOne: false
             referencedRelation: "photographer_search_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_proposed_package_id_fkey"
+            columns: ["proposed_package_id"]
+            isOneToOne: false
+            referencedRelation: "packages"
             referencedColumns: ["id"]
           },
           {
