@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/lib/database.types";
 
 /**
  * WARNING: SERVICE ROLE CLIENT. SERVER ONLY.
@@ -20,7 +21,7 @@ export function createAdminClient() {
     throw new Error("Supabase admin client is missing URL or service role key.");
   }
 
-  return createClient(url, serviceRoleKey, {
+  return createClient<Database>(url, serviceRoleKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false,
