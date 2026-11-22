@@ -220,15 +220,15 @@ export async function loadPublicPhotographerWithPackages(
       }
     }
 
-    // 2. Load portfolio_images, packages, availability, and reviews in parallel
+    // 2. Load portfolio_images, packages, availability (up to 6 months ahead), and reviews in parallel
     const now = new Date();
     const year = now.getUTCFullYear();
     const monthIndex = now.getUTCMonth();
     const monthStart = `${year}-${String(monthIndex + 1).padStart(2, "0")}-01`;
-    const daysInMonth = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
-    const monthEnd = `${year}-${String(monthIndex + 1).padStart(2, "0")}-${String(
-      daysInMonth
-    ).padStart(2, "0")}`;
+    const futureLimit = new Date(Date.UTC(year, monthIndex + 7, 0));
+    const futureEnd = `${futureLimit.getUTCFullYear()}-${String(
+      futureLimit.getUTCMonth() + 1
+    ).padStart(2, "0")}-${String(futureLimit.getUTCDate()).padStart(2, "0")}`;
 
     const [portfolioRes, pkgRes, availRes, reviewsRes] = await Promise.all([
       supabase
@@ -250,7 +250,7 @@ export async function loadPublicPhotographerWithPackages(
         .select("date, status")
         .eq("photographer_id", idOrSlug)
         .gte("date", monthStart)
-        .lte("date", monthEnd),
+        .lte("date", futureEnd),
       supabase
         .from("reviews")
         .select("id, reviewer_id, rating, comment, created_at")
@@ -311,8 +311,12 @@ export async function loadPublicPhotographerWithPackages(
     const packages = mapDbPackages(pkgRes.data ?? []);
 
     // 6. Build availability summary
+    const availRows = availRes.data ?? [];
     const { summary: availabilitySummary, nextFreeLabel } =
-      buildAvailabilitySummary(availRes.data ?? [], now);
+      buildAvailabilitySummary(availRows, now);
+    const unavailableIsoDates = availRows
+      .filter((r) => r.status === "booked" || r.status === "unavailable")
+      .map((r) => r.date);
 
     // 7. Compute review stats (average rating and count; can be 0)
     const rawReviews = reviewsRes.data ?? [];
@@ -356,6 +360,7 @@ export async function loadPublicPhotographerWithPackages(
       yearsExperience: phRow.years_experience,
       socialLinks: parseSocialLinks(phRow.social_links),
       availabilitySummary,
+      unavailableIsoDates,
       reviewStats: {
         averageRating,
         reviewCount,

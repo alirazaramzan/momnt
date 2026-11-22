@@ -1,35 +1,63 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { Button, Chip } from "@/components/ui";
+import { useRouter } from "next/navigation";
 import { EmptyState } from "@/components/patterns";
 import {
+  Button,
+  Chip,
   Dialog,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
+  DialogHeader,
+  DialogTitle,
+  Input,
+  Label,
+  Select,
+  Textarea,
+  Toast,
+} from "@/components/ui";
+import {
+  proposeBookingAlternative,
+  transitionBookingStatus,
+} from "@/lib/booking/actions";
+import type {
+  EnrichedBookingItem,
+  PhotographerOptionPackage,
+} from "@/lib/booking/queries";
+import {
+  bookingStatusChipVariant,
+  formatBookingStatusLabel,
+  type DbBookingStatus,
+} from "@/lib/booking/transitions";
 
-// Fixture data matching concepts-1 and AGENTS.md
-interface RequestItem {
+// Fixture data matching concepts-1 and AGENTS.md when no database rows are passed
+export interface RequestItem {
   id: string;
   event: string;
   place: string;
   date: string;
+  isoDate?: string;
   hours: number;
+  clientName?: string;
+  packageId?: string | null;
+  price?: number;
+  proposedDate?: string | null;
+  proposedPackageId?: string | null;
+  proposalNote?: string | null;
+  isLiveBooking?: boolean;
 }
 
-interface UpcomingShootItem {
+export interface UpcomingShootItem {
   id: string;
   event: string;
   date: string;
-  status: "deposit_paid" | "accepted";
+  status: DbBookingStatus;
 }
 
-interface GigItem {
+export interface GigItem {
   id: string;
   title: string;
   reason: string;
@@ -98,14 +126,180 @@ const INITIAL_GIGS: GigItem[] = [
   },
 ];
 
-export function PhotographerDashboardClient() {
-  const [showEmpty, setShowEmpty] = useState(false);
-  const [selectedRequest, setSelectedRequest] = useState<RequestItem | null>(null);
-  const [showStatusModal, setShowStatusModal] = useState(false);
+type ToastState = {
+  variant: "verified" | "alert";
+  title: string;
+  description?: string;
+} | null;
 
-  const requests = showEmpty ? [] : INITIAL_REQUESTS;
-  const shoots = showEmpty ? [] : INITIAL_SHOOTS;
-  const gigs = showEmpty ? [] : INITIAL_GIGS;
+export interface PhotographerDashboardClientProps {
+  initialBookings?: EnrichedBookingItem[];
+  packages?: PhotographerOptionPackage[];
+  verificationStatus?: "pending" | "under_review" | "verified" | "rejected";
+  matchingGigs?: GigItem[];
+}
+
+export function PhotographerDashboardClient({
+  initialBookings,
+  packages = [],
+  verificationStatus = "under_review",
+  matchingGigs,
+}: PhotographerDashboardClientProps) {
+  const router = useRouter();
+  const hasLiveBookings = initialBookings !== undefined;
+  const [liveBookings, setLiveBookings] = useState<EnrichedBookingItem[]>(
+    initialBookings ?? []
+  );
+  const [showEmpty, setShowEmpty] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState<RequestItem | null>(
+    null
+  );
+  const [showProposeFields, setShowProposeFields] = useState(false);
+  const [proposedDate, setProposedDate] = useState("");
+  const [proposedPackageId, setProposedPackageId] = useState("");
+  const [proposalNote, setProposalNote] = useState("");
+  const [dialogError, setDialogError] = useState("");
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [toast, setToast] = useState<ToastState>(null);
+  const [isMutating, startMutating] = useTransition();
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = window.setTimeout(() => setToast(null), 4000);
+    return () => window.clearTimeout(timer);
+  }, [toast]);
+
+  const mappedLiveRequests: RequestItem[] = liveBookings
+    .filter((b) => b.status === "requested")
+    .map((b) => ({
+      id: b.id,
+      event: b.eventType,
+      place: b.location,
+      date: b.eventDateShort,
+      isoDate: b.eventDate,
+      hours: b.durationHours,
+      clientName: b.clientName,
+      packageId: b.packageId,
+      price: b.price,
+      proposedDate: b.proposedDate,
+      proposedPackageId: b.proposedPackageId,
+      proposalNote: b.proposalNote,
+      isLiveBooking: true,
+    }));
+
+  const mappedLiveShoots: UpcomingShootItem[] = liveBookings
+    .filter((b) =>
+      ["accepted", "deposit_paid", "shoot_done", "delivered"].includes(b.status)
+    )
+    .map((b) => ({
+      id: b.id,
+      event: `${b.eventType} · ${b.clientName}`,
+      date: b.eventDateShort,
+      status: b.status,
+    }));
+
+  const requests = showEmpty
+    ? []
+    : hasLiveBookings
+    ? mappedLiveRequests
+    : INITIAL_REQUESTS;
+
+  const shoots = showEmpty
+    ? []
+    : hasLiveBookings
+    ? mappedLiveShoots
+    : INITIAL_SHOOTS;
+
+  const gigs = showEmpty
+    ? []
+    : matchingGigs && matchingGigs.length > 0
+    ? matchingGigs
+    : INITIAL_GIGS;
+
+  const openRequestModal = (req: RequestItem) => {
+    setSelectedRequest(req);
+    setShowProposeFields(false);
+    setProposedDate(req.proposedDate ?? req.isoDate ?? "");
+    setProposedPackageId(req.proposedPackageId ?? req.packageId ?? "");
+    setProposalNote(req.proposalNote ?? "");
+    setDialogError("");
+  };
+
+  const handleAcceptOrReject = (nextStatus: "accepted" | "rejected") => {
+    if (!selectedRequest) return;
+
+    if (!selectedRequest.isLiveBooking) {
+      setSelectedRequest(null);
+      return;
+    }
+
+    setDialogError("");
+    startMutating(async () => {
+      const result = await transitionBookingStatus({
+        booking_id: selectedRequest.id,
+        next_status: nextStatus,
+      });
+
+      if (result.ok) {
+        setLiveBookings((prev) =>
+          prev.map((item) =>
+            item.id === selectedRequest.id
+              ? { ...item, status: result.status }
+              : item
+          )
+        );
+        setSelectedRequest(null);
+        setToast({
+          variant: "verified",
+          title:
+            nextStatus === "accepted" ? "Request accepted" : "Request declined",
+          description: result.message,
+        });
+      } else {
+        setDialogError(result.error);
+      }
+    });
+  };
+
+  const handleSendCounterProposal = () => {
+    if (!selectedRequest || !selectedRequest.isLiveBooking) {
+      setSelectedRequest(null);
+      return;
+    }
+
+    setDialogError("");
+    startMutating(async () => {
+      const result = await proposeBookingAlternative({
+        booking_id: selectedRequest.id,
+        proposed_date: proposedDate || null,
+        proposed_package_id: proposedPackageId || null,
+        proposal_note: proposalNote || null,
+      });
+
+      if (result.ok) {
+        setLiveBookings((prev) =>
+          prev.map((item) =>
+            item.id === selectedRequest.id
+              ? {
+                  ...item,
+                  proposedDate: proposedDate || null,
+                  proposedPackageId: proposedPackageId || null,
+                  proposalNote: proposalNote || null,
+                }
+              : item
+          )
+        );
+        setSelectedRequest(null);
+        setToast({
+          variant: "verified",
+          title: "Proposal sent",
+          description: result.message,
+        });
+      } else {
+        setDialogError(result.error);
+      }
+    });
+  };
 
   return (
     <div className="space-y-8">
@@ -116,8 +310,11 @@ export function PhotographerDashboardClient() {
         aria-label="Verification status notice"
       >
         <p className="font-sans text-sm text-midnight leading-relaxed">
-          Verification under review. You can build your profile while we check
-          your documents.
+          {verificationStatus === "verified"
+            ? "Verified Momnt photographer. Your calendar and packages are live for client booking requests."
+            : verificationStatus === "rejected"
+            ? "Verification requires attention. Review admin notes in your verification status."
+            : "Verification under review. You can build your profile while we check your documents."}
         </p>
         <Button
           variant="quiet"
@@ -132,9 +329,7 @@ export function PhotographerDashboardClient() {
       {/* Mode toggle for testing / inspection */}
       <div className="flex items-center justify-between pt-1">
         <div>
-          <h1 className="font-sans text-xs text-slate">
-            Schedule overview
-          </h1>
+          <h1 className="font-sans text-xs text-slate">Schedule overview</h1>
         </div>
         <Button
           variant="quiet"
@@ -168,7 +363,11 @@ export function PhotographerDashboardClient() {
             <EmptyState
               message="No pending booking requests to answer."
               actionLabel="Update calendar"
-              onAction={() => setShowEmpty(false)}
+              onAction={() =>
+                showEmpty
+                  ? setShowEmpty(false)
+                  : router.push("/photographer/calendar")
+              }
             />
           ) : (
             <div className="divide-y divide-[#CFCFCB]" role="list">
@@ -182,19 +381,20 @@ export function PhotographerDashboardClient() {
                     aria-label={`Request: ${req.event}, ${req.place}, ${req.date}, ${req.hours} hours`}
                     className="group py-3.5 px-2 -mx-2 flex items-center justify-between gap-4 rounded-[2px] transition-colors hover:bg-mist/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-midnight"
                   >
-                    <div className="space-y-0.5">
-                      <div className="font-sans text-sm font-medium text-midnight">
+                    <div className="space-y-0.5 min-w-0">
+                      <div className="font-sans text-sm font-medium text-midnight truncate">
                         {req.event}, {req.place}
                       </div>
-                      <div className="font-sans text-xs text-slate">
+                      <div className="font-sans text-xs text-slate tabular-nums">
                         {req.date}, {req.hours} hours
+                        {req.clientName ? ` · ${req.clientName}` : ""}
                       </div>
                     </div>
 
                     <Button
                       variant={isFirst ? "primary" : "secondary"}
                       size="sm"
-                      onClick={() => setSelectedRequest(req)}
+                      onClick={() => openRequestModal(req)}
                       className="shrink-0"
                     >
                       Reply
@@ -204,6 +404,15 @@ export function PhotographerDashboardClient() {
               })}
             </div>
           )}
+
+          <div className="pt-1">
+            <Link
+              href="/photographer/requests"
+              className="font-sans text-xs text-slate hover:text-midnight underline underline-offset-4"
+            >
+              Open full requests queue &rarr;
+            </Link>
+          </div>
         </section>
 
         {/* Column 2: Upcoming shoots */}
@@ -225,8 +434,12 @@ export function PhotographerDashboardClient() {
           {shoots.length === 0 ? (
             <EmptyState
               message="No upcoming shoots on your schedule."
-              actionLabel="Browse gigs"
-              onAction={() => setShowEmpty(false)}
+              actionLabel="Manage calendar"
+              onAction={() =>
+                showEmpty
+                  ? setShowEmpty(false)
+                  : router.push("/photographer/calendar")
+              }
             />
           ) : (
             <div className="divide-y divide-[#CFCFCB]" role="list">
@@ -235,31 +448,39 @@ export function PhotographerDashboardClient() {
                   key={shoot.id}
                   tabIndex={0}
                   role="listitem"
-                  aria-label={`Shoot: ${shoot.event}, ${shoot.date}, status ${shoot.status === "deposit_paid" ? "deposit paid" : "accepted"}`}
+                  aria-label={`Shoot: ${shoot.event}, ${shoot.date}, status ${formatBookingStatusLabel(
+                    shoot.status
+                  ).toLowerCase()}`}
                   className="group py-3.5 px-2 -mx-2 flex items-center justify-between gap-4 rounded-[2px] transition-colors hover:bg-mist/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-midnight"
                 >
-                  <div className="space-y-0.5">
-                    <div className="font-sans text-sm font-medium text-midnight">
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="font-sans text-sm font-medium text-midnight truncate">
                       {shoot.event}
                     </div>
-                    <div className="font-sans text-xs text-slate">
+                    <div className="font-sans text-xs text-slate tabular-nums">
                       {shoot.date}
                     </div>
                   </div>
 
-                  {shoot.status === "deposit_paid" ? (
-                    <Chip variant="verified" size="sm">
-                      Deposit paid
-                    </Chip>
-                  ) : (
-                    <Chip variant="neutral" size="sm">
-                      Accepted
-                    </Chip>
-                  )}
+                  <Chip
+                    variant={bookingStatusChipVariant(shoot.status)}
+                    size="sm"
+                  >
+                    {formatBookingStatusLabel(shoot.status)}
+                  </Chip>
                 </div>
               ))}
             </div>
           )}
+
+          <div className="pt-1">
+            <Link
+              href="/photographer/projects"
+              className="font-sans text-xs text-slate hover:text-midnight underline underline-offset-4"
+            >
+              Manage active projects &rarr;
+            </Link>
+          </div>
         </section>
 
         {/* Column 3: Gigs for you */}
@@ -303,7 +524,7 @@ export function PhotographerDashboardClient() {
                     </div>
                   </div>
 
-                  <Link href="/gigs" tabIndex={-1}>
+                  <Link href="/gigs/new" tabIndex={-1}>
                     <Button
                       variant="quiet"
                       size="sm"
@@ -332,31 +553,113 @@ export function PhotographerDashboardClient() {
             <DialogDescription>
               {selectedRequest?.place} &bull; {selectedRequest?.date} &bull;{" "}
               {selectedRequest?.hours} hours
+              {selectedRequest?.price
+                ? ` · PKR ${selectedRequest.price.toLocaleString()}`
+                : ""}
             </DialogDescription>
           </DialogHeader>
 
-          <div className="py-4 space-y-3 text-sm font-sans text-midnight">
-            <p className="text-xs text-slate leading-relaxed">
-              Confirm your availability or propose an alternate slot. Clients
-              expect a response within the hour.
+          {dialogError && (
+            <p role="alert" className="font-sans text-xs font-medium text-alert">
+              {dialogError}
             </p>
+          )}
+
+          <div className="py-3 space-y-4 text-sm font-sans text-midnight">
+            <p className="text-xs text-slate leading-relaxed">
+              Accepting automatically marks this date as booked on your calendar.
+              Or propose an alternate date or package below.
+            </p>
+
+            {selectedRequest?.isLiveBooking && (
+              <div className="space-y-3 pt-2 border-t border-[#CFCFCB]">
+                <button
+                  type="button"
+                  onClick={() => setShowProposeFields(!showProposeFields)}
+                  className="font-sans text-xs font-medium text-midnight underline underline-offset-4"
+                >
+                  {showProposeFields
+                    ? "Hide counter-proposal options"
+                    : "Propose another date or package instead"}
+                </button>
+
+                {showProposeFields && (
+                  <div className="space-y-3 pt-1">
+                    <div className="space-y-1">
+                      <Label htmlFor="dash-propose-date">Proposed date</Label>
+                      <Input
+                        id="dash-propose-date"
+                        type="date"
+                        value={proposedDate}
+                        onChange={(e) => setProposedDate(e.target.value)}
+                        className="tabular-nums"
+                      />
+                    </div>
+                    {packages.length > 0 && (
+                      <div className="space-y-1">
+                        <Label htmlFor="dash-propose-pkg">
+                          Proposed package
+                        </Label>
+                        <Select
+                          id="dash-propose-pkg"
+                          value={proposedPackageId}
+                          onChange={(e) => setProposedPackageId(e.target.value)}
+                        >
+                          <option value="">Keep requested package</option>
+                          {packages.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.name} — PKR {p.price.toLocaleString()}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
+                    )}
+                    <div className="space-y-1">
+                      <Label htmlFor="dash-propose-note" optional>
+                        Note to client
+                      </Label>
+                      <Textarea
+                        id="dash-propose-note"
+                        value={proposalNote}
+                        onChange={(e) => setProposalNote(e.target.value)}
+                        placeholder="Optional message for the client..."
+                        className="min-h-[68px]"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <DialogFooter>
             <Button
               variant="secondary"
               size="md"
-              onClick={() => setSelectedRequest(null)}
+              disabled={isMutating}
+              onClick={() => handleAcceptOrReject("rejected")}
             >
               Decline date
             </Button>
-            <Button
-              variant="primary"
-              size="md"
-              onClick={() => setSelectedRequest(null)}
-            >
-              Accept request
-            </Button>
+            {showProposeFields && selectedRequest?.isLiveBooking ? (
+              <Button
+                variant="primary"
+                size="md"
+                loading={isMutating}
+                onClick={handleSendCounterProposal}
+              >
+                Send proposal
+              </Button>
+            ) : (
+              <Button
+                variant="primary"
+                size="md"
+                loading={isMutating}
+                onClick={() => handleAcceptOrReject("accepted")}
+              >
+                Accept request
+              </Button>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -368,7 +671,11 @@ export function PhotographerDashboardClient() {
       >
         <DialogContent onClose={() => setShowStatusModal(false)}>
           <DialogHeader>
-            <DialogTitle>Verification under review</DialogTitle>
+            <DialogTitle>
+              {verificationStatus === "verified"
+                ? "Verified photographer"
+                : "Verification under review"}
+            </DialogTitle>
             <DialogDescription>
               Momnt curation and identification check
             </DialogDescription>
@@ -376,17 +683,22 @@ export function PhotographerDashboardClient() {
 
           <div className="py-4 space-y-4 text-sm font-sans text-midnight">
             <p className="text-xs text-slate leading-relaxed">
-              Your CNIC and portfolio submissions are currently being audited by
-              our verification team. Most reviews complete within 48 hours.
+              {verificationStatus === "verified"
+                ? "Your CNIC and portfolio have been verified by Momnt. Clients can book your packages directly."
+                : "Your CNIC and portfolio submissions are currently being audited by our verification team. Most reviews complete within 48 hours."}
             </p>
             <div className="border border-[#CFCFCB] p-3 rounded-[2px] space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate">Portfolio review</span>
-                <span className="text-verified font-medium">In review</span>
+                <span className="text-verified font-medium">
+                  {verificationStatus === "verified" ? "Verified" : "In review"}
+                </span>
               </div>
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate">Identity check</span>
-                <span className="text-verified font-medium">In review</span>
+                <span className="text-verified font-medium">
+                  {verificationStatus === "verified" ? "Verified" : "In review"}
+                </span>
               </div>
             </div>
           </div>
@@ -402,6 +714,21 @@ export function PhotographerDashboardClient() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Toast region */}
+      <div
+        className="fixed bottom-20 md:bottom-6 right-6 left-6 sm:left-auto z-50 flex justify-end"
+        aria-live="polite"
+      >
+        {toast && (
+          <Toast
+            variant={toast.variant}
+            title={toast.title}
+            description={toast.description}
+            onClose={() => setToast(null)}
+          />
+        )}
+      </div>
     </div>
   );
 }

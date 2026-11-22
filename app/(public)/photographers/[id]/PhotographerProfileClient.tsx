@@ -150,8 +150,8 @@ export function PhotographerProfileClient({
     packages[0]?.id ?? ""
   );
 
-  // Availability summary from the server component
-  const availability = photographer.availabilitySummary ?? {
+  // Availability summary from the server component + month navigation
+  const initialAvailability = photographer.availabilitySummary ?? {
     month: "December",
     year: 2026,
     daysCount: 31,
@@ -160,10 +160,81 @@ export function PhotographerProfileClient({
     defaultSelectedDate: 14,
   };
 
+  const MONTH_NAMES = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const initialMonthIdx = Math.max(
+    0,
+    MONTH_NAMES.indexOf(initialAvailability.month)
+  );
+  const [viewYear, setViewYear] = useState<number>(initialAvailability.year);
+  const [viewMonthIdx, setViewMonthIdx] = useState<number>(initialMonthIdx);
+
+  const daysInViewMonth = new Date(
+    Date.UTC(viewYear, viewMonthIdx + 1, 0)
+  ).getUTCDate();
+  const firstDow = new Date(Date.UTC(viewYear, viewMonthIdx, 1)).getUTCDay();
+  const firstDayOffset = (firstDow + 6) % 7;
+
+  const ymPrefix = `${viewYear}-${String(viewMonthIdx + 1).padStart(2, "0")}-`;
+  const viewBookedDates =
+    photographer.unavailableIsoDates !== undefined
+      ? photographer.unavailableIsoDates
+          .filter((iso) => iso.startsWith(ymPrefix))
+          .map((iso) => Number(iso.slice(ymPrefix.length)))
+          .filter((d) => Number.isInteger(d) && d >= 1 && d <= daysInViewMonth)
+      : viewYear === initialAvailability.year &&
+        viewMonthIdx === initialMonthIdx
+      ? initialAvailability.bookedDates
+      : [];
+
+  const availability = {
+    month: MONTH_NAMES[viewMonthIdx],
+    year: viewYear,
+    daysCount: daysInViewMonth,
+    firstDayOffset,
+    bookedDates: viewBookedDates,
+  };
+
   // State for selected calendar date
   const [selectedDate, setSelectedDate] = useState<number | null>(
-    availability.defaultSelectedDate
+    initialAvailability.defaultSelectedDate
   );
+
+  const changeCalendarMonth = (delta: number) => {
+    const next = new Date(Date.UTC(viewYear, viewMonthIdx + delta, 1));
+    const nextY = next.getUTCFullYear();
+    const nextM = next.getUTCMonth();
+    const nextDays = new Date(Date.UTC(nextY, nextM + 1, 0)).getUTCDate();
+    const nextPrefix = `${nextY}-${String(nextM + 1).padStart(2, "0")}-`;
+    const nextBooked = new Set(
+      (photographer.unavailableIsoDates ?? [])
+        .filter((iso) => iso.startsWith(nextPrefix))
+        .map((iso) => Number(iso.slice(nextPrefix.length)))
+    );
+    let firstFree: number | null = null;
+    for (let d = 1; d <= nextDays; d++) {
+      if (!nextBooked.has(d)) {
+        firstFree = d;
+        break;
+      }
+    }
+    setViewYear(nextY);
+    setViewMonthIdx(nextM);
+    setSelectedDate(firstFree);
+  };
 
   // Portfolio frames: real uploaded portfolio images when present, otherwise placeholders
   const portfolioItems =
@@ -185,14 +256,16 @@ export function PhotographerProfileClient({
     (reviewCount > 0 ? photographer.rating : 0);
 
   const handleRequestDate = () => {
-    const shortMonth = availability.month.slice(0, 3);
-    const dateParam = selectedDate
-      ? `${selectedDate}-${shortMonth}`
+    const isoDate = selectedDate
+      ? `${availability.year}-${String(viewMonthIdx + 1).padStart(
+          2,
+          "0"
+        )}-${String(selectedDate).padStart(2, "0")}`
       : photographer.nextFree.replace(/\s+/g, "-");
     const pkgQuery = selectedPackageId
       ? `&package=${encodeURIComponent(selectedPackageId)}`
       : "";
-    router.push(`/book/${photographer.id}?date=${dateParam}${pkgQuery}`);
+    router.push(`/book/${photographer.id}?date=${isoDate}${pkgQuery}`);
   };
 
   const subtitleParts = [
@@ -326,13 +399,37 @@ export function PhotographerProfileClient({
             {/* MonthCalendar Section */}
             <div className="space-y-2 pt-2 border-t border-[#CFCFCB]">
               <div className="space-y-1">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2">
                   <span className="font-sans text-xs font-semibold text-slate">
                     Availability
                   </span>
-                  <span className="font-sans text-xs text-slate tabular-nums">
-                    Next free: {photographer.nextFree}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-sans text-xs text-slate tabular-nums">
+                      Next free: {photographer.nextFree}
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        aria-label="Previous month"
+                        onClick={() => changeCalendarMonth(-1)}
+                        className="h-6 px-2 text-xs"
+                      >
+                        &larr;
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        aria-label="Next month"
+                        onClick={() => changeCalendarMonth(1)}
+                        className="h-6 px-2 text-xs"
+                      >
+                        &rarr;
+                      </Button>
+                    </div>
+                  </div>
                 </div>
                 <MonthCalendar
                   month={availability.month}
